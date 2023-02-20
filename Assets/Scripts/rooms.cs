@@ -3,5 +3,5 @@ using UnityEngine;
 [System.Serializable]
 public class Rooms
 {
-    public RoomInfo[] rooms {get; set;}
+    public RoomInfo[] Rooms {get; set;}
 }
