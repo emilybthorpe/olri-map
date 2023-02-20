@@ -52,6 +52,12 @@ public class DropDownSearch: MonoBehaviour
     {
         // TODO: Retrieve the list of all room numbers from your data source
         // For this example, we'll just hard-code some sample data
-        return new List<string> { "101", "102", "103", "201", "202", "203", "301", "302", "303" };
+        Rooms rooms = ManageRooms.roomsFromJSON;
+        List roomNames = new List<string>;
+        foreach (RoomInfo room in rooms.Rooms) 
+        {
+            roomNames.Add(room);
+        }
+        return roomNames;
     }
 }
