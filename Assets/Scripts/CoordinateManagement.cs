@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class ManageCoordinates : MonoBehaviour
 {
     
-    public int[][] coordinateMap;
+    public int[,] coordinateMap;
  
     
 
@@ -14,7 +14,8 @@ public class ManageCoordinates : MonoBehaviour
     void Start()
     {
         coordinateMap = new int[500][750];
-        Rooms rooms = ManageRooms.roomsFromJSON;
+        ManageRooms manageRooms = new ManageRooms();
+        Rooms rooms = manageRooms.roomsFromJSON;
 
         establishRooms(rooms);
         
@@ -30,8 +31,8 @@ public class ManageCoordinates : MonoBehaviour
 
         foreach (RoomInfo room in rooms.rooms) 
         {
-            int[] coordinates = roomInfo.coords;
-            if(roomInfo.shape.Equals("rect")) {
+            int[] coordinates = room.coords;
+            if(room.shape.Equals("rect")) {
                 //Mark outer walls
                 for(int i = coordinates[0]; i <= coordinates[2]; i++) {
                     roomMap[i][coordinates[1]] = 1;

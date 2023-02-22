@@ -17,4 +17,8 @@ public class ManageRooms : MonoBehaviour
             Debug.Log("Found room" + roomInfo.Number);
         }
     }
+
+    Rooms GetRooms() {
+        return roomsFromJSON;
+    }
 }
