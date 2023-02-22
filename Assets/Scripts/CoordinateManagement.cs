@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
 public class ManageCoordinates : MonoBehaviour
 {
     
@@ -10,35 +11,43 @@ public class ManageCoordinates : MonoBehaviour
     void Start()
     {
         coordinateMap = new int[500][750];
-        """
-        0 = inside room
-        1 = wall
-        2 = hallway
-        -1 = inaccseasable (outside buidling)
-        """;
+        coordinateMap = establishRooms(ManageRooms.roomsFromJSON, coordinateMap);
+        // """
+        // 0 = inside room
+        // 1 = wall
+        // 2 = hallway
+        // -1 = inaccseasable (outside buidling)
+        // """;
     }
 
-    void establishRooms(Rooms rooms) {
+    int[][] establishRooms(Rooms rooms, int[][] roomMap) {
+        //int[][] roomMap = new int[500][750];
         foreach (RoomInfo roomInfo in rooms)
         {
             int[] coordinates = roomInfo.coords;
             if(roomInfo.shape.Equals("rect")) {
-                """
-                from x1y1 to x2y2: top
-                from x1y2 to x2y2: bottom
-                from x1y1 to x1y2: left
-                from x2y1 to x2y2: right
-                """;
+                //Mark outer walls
                 for(int i = coordinates[0]; i <= coordinates[2]; i++) {
-                    coordinateMap[i][coordinates[1]] = 1;
-                    coordinateMap[i][coordinates[3]] = 1;
+                    roomMap[i][coordinates[1]] = 1;
+                    roomMap[i][coordinates[3]] = 1;
                 }
                 for (int i = coordinates[1]; i <= coordinates[2]; i++)
                 {
-                    coordinateMap[coordinates[0]][i] = 1;
-                    coordinateMap[coordinates[2]][i] = 1;
+                    roomMap[coordinates[0]][i] = 1;
+                    roomMap[coordinates[2]][i] = 1;
                 }
+                //Mark inside room
+                for(int x = coordinates[0] + 1; x < coordinates[2]; x++)
+                {
+                    for(int y = coordinates[1] + 1; y < coordinates[3]; y++) 
+                    {
+                        roomMap[x][y] = 0;
+                    }
+                }
+
             }
+            //TODO: create code to mark polygons 
         }
+        return roomMap;
     }
 }
