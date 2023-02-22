@@ -43,15 +43,14 @@ public class DropDownSearch: MonoBehaviour
 
         resultsDropdown.Show();
         searchField.ActivateInputField();
-        searchField.caretPosition = 2;
-        
-       
+        searchField.caretPosition = 2;       
     }
 
+    /// <summary>
+    /// Returns a list of room numbers extracted from JSON file
+    /// </summary>
     private List<string> GetAllRoomNumbers()
     {
-        // TODO: Retrieve the list of all room numbers from your data source
-        // For this example, we'll just hard-code some sample data
         Rooms rooms = ManageRooms.roomsFromJSON;
         List roomNames = new List<string>();
         foreach (RoomInfo room in rooms.Rooms) 
