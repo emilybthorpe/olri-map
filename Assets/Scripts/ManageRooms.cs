@@ -12,7 +12,7 @@ public class ManageRooms : MonoBehaviour
     {
         roomsFromJSON = JsonUtility.FromJson<Rooms>(jsonFile.text);
  
-        foreach (RoomInfo roomInfo in roomsFromJSON.Rooms)
+        foreach (RoomInfo roomInfo in roomsFromJSON.rooms)
         {
             Debug.Log("Found room" + roomInfo.Number);
         }

@@ -8,6 +8,9 @@ public class ManageCoordinates : MonoBehaviour
     
     public int[][] coordinateMap;
  
+    
+
+
     void Start()
     {
         coordinateMap = new int[500][750];
