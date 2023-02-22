@@ -6,7 +6,7 @@ public class ManageRooms : MonoBehaviour
 {
     public TextAsset jsonFile;
 
-    Rooms roomsFromJSON {get; set;}
+    public Rooms roomsFromJSON {get; set;}
  
     void Start()
     {

@@ -53,7 +53,7 @@ public class DropDownSearch: MonoBehaviour
     {
         Rooms rooms = ManageRooms.roomsFromJSON;
         List roomNames = new List<string>();
-        foreach (RoomInfo room in rooms.Rooms) 
+        foreach (RoomInfo room in rooms.rooms) 
         {
             roomNames.Add(room);
         }

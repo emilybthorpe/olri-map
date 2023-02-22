@@ -14,7 +14,10 @@ public class ManageCoordinates : MonoBehaviour
     void Start()
     {
         coordinateMap = new int[500][750];
-        coordinateMap = establishRooms(ManageRooms.roomsFromJSON, coordinateMap);
+        Rooms rooms = ManageRooms.roomsFromJSON;
+
+        establishRooms(rooms);
+        
         // """
         // 0 = inside room
         // 1 = wall
@@ -23,9 +26,9 @@ public class ManageCoordinates : MonoBehaviour
         // """;
     }
 
-    int[][] establishRooms(Rooms rooms, int[][] roomMap) {
-        //int[][] roomMap = new int[500][750];
-        foreach (RoomInfo roomInfo in rooms)
+    void establishRooms(Rooms rooms) {
+
+        foreach (RoomInfo room in rooms.rooms) 
         {
             int[] coordinates = roomInfo.coords;
             if(roomInfo.shape.Equals("rect")) {

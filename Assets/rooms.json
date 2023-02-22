@@ -1,5 +1,5 @@
 {
-    "Rooms" : [
+    "rooms" : [
         {
             "Number": 141,
             "shape": "rect", 
