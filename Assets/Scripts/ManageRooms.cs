@@ -5,12 +5,14 @@ using UnityEngine.SceneManagement;
 public class ManageRooms : MonoBehaviour
 {
     public TextAsset jsonFile;
+
+    Rooms roomsFromJSON {get; set;}
  
     void Start()
     {
-        Rooms roomsInJSON = JsonUtility.FromJson<Rooms>(jsonFile.text);
+        roomsFromJSON = JsonUtility.FromJson<Rooms>(jsonFile.text);
  
-        foreach (RoomInfo roomInfo in roomsInJSON.rooms)
+        foreach (RoomInfo roomInfo in roomsFromJSON.Rooms)
         {
             Debug.Log("Found room" + roomInfo.Number);
         }
