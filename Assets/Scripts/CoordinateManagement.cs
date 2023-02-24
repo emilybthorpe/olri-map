@@ -15,7 +15,7 @@ public class ManageCoordinates : MonoBehaviour
 
     void Start()
     {
-        coordinateMap = new int[500][750];
+        coordinateMap = new int[500, 750];
         ManageRooms manageRooms = new ManageRooms();
         ManageHallways manageHallways = new ManageHallways();
         
@@ -26,25 +26,26 @@ public class ManageCoordinates : MonoBehaviour
         // Start my marking the entire map as outside, before marking the speicifcs of the building
         for (int x = 0; x < 500; x++) {
             for (int y = 0; y < 750; y++) {
-                coordinateMap[x][y];
+                coordinateMap[x, y] = -1;;
             }
         }
 
         establishRooms();
         
-        // """
-        // 0 = inside room
-        // 1 = wall
-        // 2 = hallway
-        // -1 = inaccseasable (outside buidling)
-        // """;
+        // 
+        // 0 = inside room (walkable)
+        // 1 = wall (not walkable)
+        // 2 = hallway (walkable)
+        // -1 = inaccseasable (outside buidling, not walkable)
+        // 
+        // Logic: getting from point A to Point B using just walkable areas
     }
 
     /// <summary>
     /// Returns true if given point is inside a room
     /// </summary>
     bool checkIfPointInRoom(int x, int y) {
-        return coordinateMap[x][y] == 1;
+        return coordinateMap[x, y] == 1;
     }
 
     /// <summary>
@@ -53,7 +54,7 @@ public class ManageCoordinates : MonoBehaviour
     /// </summary>
     RoomInfo getRoomContainingPoint(int x, int y) {
 
-        if (!checkIfPointInRoom()) {
+        if (!checkIfPointInRoom(x, y)) {
             return null;
         }
 
@@ -75,7 +76,7 @@ public class ManageCoordinates : MonoBehaviour
             {
                 for(int y = coordinates[1]; y < coordinates[3]; y++) 
                 {
-                    roomMap[x][y] = 2;
+                    coordinateMap[x, y] = 2;
                 }
             }
         }
@@ -88,26 +89,25 @@ public class ManageCoordinates : MonoBehaviour
             if(room.shape.Equals("rect")) {
                 //Mark outer walls
                 for(int i = coordinates[0]; i <= coordinates[2]; i++) {
-                    roomMap[i][coordinates[1]] = 1;
-                    roomMap[i][coordinates[3]] = 1;
+                    coordinateMap[i, coordinates[1]] = 1;
+                    coordinateMap[i, coordinates[3]] = 1;
                 }
                 for (int i = coordinates[1]; i <= coordinates[2]; i++)
                 {
-                    roomMap[coordinates[0]][i] = 1;
-                    roomMap[coordinates[2]][i] = 1;
+                    coordinateMap[coordinates[0], i] = 1;
+                    coordinateMap[coordinates[2], i] = 1;
                 }
                 //Mark inside room
                 for(int x = coordinates[0] + 1; x < coordinates[2]; x++)
                 {
                     for(int y = coordinates[1] + 1; y < coordinates[3]; y++) 
                     {
-                        roomMap[x][y] = 0;
+                        coordinateMap[x, y] = 0;
                     }
                 }
 
             }
             //TODO: create code to mark polygons 
         }
-        return roomMap;
     }
 }

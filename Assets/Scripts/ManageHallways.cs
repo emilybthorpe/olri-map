@@ -14,7 +14,7 @@ public class ManageHallways : MonoBehaviour
  
         foreach (Hallway hallway in hallwaysFromJSON.hallways)
         {
-            Debug.Log("Found room" + roomInfo.Number);
+            Debug.Log("Found room" + hallway.Number);
         }
     }
 }
