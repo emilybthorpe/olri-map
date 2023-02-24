@@ -13,11 +13,16 @@ public class DropDownSearch: MonoBehaviour
 
     private List<string> roomNumbers;
 
+    private ManageRooms manageRooms;
+
     void Start()
     {
         // Retrieve the list of all room numbers and store it in the roomNumbers list
+      //  Debug.Log("test");
+        manageRooms  = new ManageRooms();
+        Debug.Log(manageRooms.roomsFromJSON.rooms);
         roomNumbers = GetAllRoomNumbers();
-
+        
 
 
         // Add an event listener to the search field to update the dropdown menu as the user types
@@ -51,9 +56,8 @@ public class DropDownSearch: MonoBehaviour
     /// <summary>
     /// Returns a list of room numbers extracted from JSON file
     /// </summary>
-    private List<string> GetAllRoomNumbers()
+    List<string> GetAllRoomNumbers()
     {
-        ManageRooms manageRooms = new ManageRooms();
         RoomInfo[] rooms = manageRooms.roomsFromJSON.rooms;
         List<string> roomNames = new List<string>();
         foreach (RoomInfo room in rooms) 

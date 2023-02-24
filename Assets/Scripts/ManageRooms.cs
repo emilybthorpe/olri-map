@@ -2,15 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-public class ManageRooms : MonoBehaviour
+
+public class ManageRooms
 {
-    public TextAsset jsonFile;
+    public TextAsset jsonFile = Resources.Load<TextAsset>("rooms");
 
     public Rooms roomsFromJSON {get; set;}
  
-    void Start()
+    public ManageRooms()
     {
         roomsFromJSON = JsonUtility.FromJson<Rooms>(jsonFile.text);
+        Debug.Log("rooms " + roomsFromJSON.ToString());
  
         foreach (RoomInfo roomInfo in roomsFromJSON.rooms)
         {
