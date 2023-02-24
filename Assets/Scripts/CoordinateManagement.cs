@@ -10,14 +10,17 @@ public class ManageCoordinates : MonoBehaviour
     public int[,] coordinateMap;
  
     Rooms rooms;
+    Hallways hallways;
 
 
     void Start()
     {
         coordinateMap = new int[500][750];
         ManageRooms manageRooms = new ManageRooms();
+        ManageHallways manageHallways = new ManageHallways();
         
         rooms = manageRooms.roomsFromJSON;
+        hallways = manageHallways.hallwaysFromJSON;
 
 
         // Start my marking the entire map as outside, before marking the speicifcs of the building
@@ -27,7 +30,7 @@ public class ManageCoordinates : MonoBehaviour
             }
         }
 
-        establishRooms(rooms);
+        establishRooms();
         
         // """
         // 0 = inside room
@@ -64,10 +67,19 @@ public class ManageCoordinates : MonoBehaviour
         return null;
     }
 
-    void establishHallways() {}
-
-
-
+    void establishHallways() {
+        foreach (Hallway hallway in hallways.hallways)
+        {
+            int[] coordinates = hallway.coords;
+            for(int x = coordinates[0]; x < coordinates[2]; x++)
+            {
+                for(int y = coordinates[1]; y < coordinates[3]; y++) 
+                {
+                    roomMap[x][y] = 2;
+                }
+            }
+        }
+    }
 
     void establishRooms() {
         foreach (RoomInfo room in rooms.rooms) 
