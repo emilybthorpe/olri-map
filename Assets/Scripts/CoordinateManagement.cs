@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,14 +9,23 @@ public class ManageCoordinates : MonoBehaviour
     
     public int[,] coordinateMap;
  
-    
+    Rooms rooms;
 
 
     void Start()
     {
         coordinateMap = new int[500][750];
         ManageRooms manageRooms = new ManageRooms();
-        Rooms rooms = manageRooms.roomsFromJSON;
+        
+        rooms = manageRooms.roomsFromJSON;
+
+
+        // Start my marking the entire map as outside, before marking the speicifcs of the building
+        for (int x = 0; x < 500; x++) {
+            for (int y = 0; y < 750; y++) {
+                coordinateMap[x][y];
+            }
+        }
 
         establishRooms(rooms);
         
@@ -27,8 +37,39 @@ public class ManageCoordinates : MonoBehaviour
         // """;
     }
 
-    void establishRooms(Rooms rooms) {
+    /// <summary>
+    /// Returns true if given point is inside a room
+    /// </summary>
+    bool checkIfPointInRoom(int x, int y) {
+        return coordinateMap[x][y] == 1;
+    }
 
+    /// <summary>
+    /// Returns a Room containing the inputed point (represented as x,y coordinates)
+    /// If no such room exists, or the point is outside the building, returns null
+    /// </summary>
+    RoomInfo getRoomContainingPoint(int x, int y) {
+
+        if (!checkIfPointInRoom()) {
+            return null;
+        }
+
+        foreach (RoomInfo room in rooms.rooms)
+        {
+            if(room.coords.Contains(x) && room.coords.Contains(y)) {
+                return room;
+            }
+        }
+
+        return null;
+    }
+
+    void establishHallways() {}
+
+
+
+
+    void establishRooms() {
         foreach (RoomInfo room in rooms.rooms) 
         {
             int[] coordinates = room.coords;
