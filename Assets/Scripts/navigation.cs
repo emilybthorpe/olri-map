@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.IO;
+
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -19,13 +20,13 @@ public class Navigation: MonoBehaviour
 
     int[,] map;
 
-    List<Point> route;
+    private List<Point> route = new List<Point>();
+    
 
     void Start()
     {
-        this.route = new List<Point>();
         StartCoroutine(getCompletedMap());
-
+        
         //Testing:
         
     }
@@ -46,7 +47,7 @@ public class Navigation: MonoBehaviour
     
     public List<Point> getRoute() 
     {
-        return this.route;
+        return route;
     }
 
     public void logMapToFile(string mapString)
@@ -151,7 +152,7 @@ public class Navigation: MonoBehaviour
         }
     }
 
-    private static StringBuilder generateStringBuilderOfMap(int[,] outMap)
+    private StringBuilder generateStringBuilderOfMap(int[,] outMap)
     {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < outMap.GetLength(0); i++)
@@ -161,7 +162,7 @@ public class Navigation: MonoBehaviour
                 if (outMap[i,j] == 3)
                 {
                     sb.Append("*\t");
-                    this.route.Add(new Point(i, j));
+                    route.Add(new Point(i, j));
                 }
                 else {sb.Append(outMap[i, j] + "\t");}
             }
@@ -170,7 +171,7 @@ public class Navigation: MonoBehaviour
         return sb;
     }
 
-    private static List<Tile> GetWalkableTiles(int[,] map, Tile currentTile, Tile targetTile)
+    private List<Tile> GetWalkableTiles(int[,] map, Tile currentTile, Tile targetTile)
     {
         var possibleTiles = new List<Tile>()
         {
