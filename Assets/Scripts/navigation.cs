@@ -19,9 +19,11 @@ public class Navigation: MonoBehaviour
 
     int[,] map;
 
+    List<Point> route;
 
     void Start()
     {
+        this.route = new List<Point>();
         StartCoroutine(getCompletedMap());
 
         //Testing:
@@ -41,7 +43,14 @@ public class Navigation: MonoBehaviour
         navigate(510,132,546,134);
     }
 
-    public void logMapToFile(string mapString) {
+    
+    public List<Point> getRoute() 
+    {
+        return this.route;
+    }
+
+    public void logMapToFile(string mapString)
+    {
         string logPath = Application.dataPath + "/pathMap.txt";
         //Delete file if already exists
         if(File.Exists(logPath))
@@ -149,7 +158,11 @@ public class Navigation: MonoBehaviour
         {
             for (int j = 0; j < outMap.GetLength(1); j++)
             {
-                if (outMap[j,i] == 3) {sb.Append("*\t");}
+                if (outMap[i,j] == 3)
+                {
+                    sb.Append("*\t");
+                    this.route.Add(new Point(i, j));
+                }
                 else {sb.Append(outMap[i, j] + "\t");}
             }
             sb.Append("\n");

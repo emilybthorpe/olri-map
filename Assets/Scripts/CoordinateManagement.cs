@@ -11,6 +11,7 @@ public class ManageCoordinates : MonoBehaviour
 {
     
     public int[,] coordinateMap {get; set;}
+
  
     TextAsset roomsJSON;
     TextAsset hallwaysJSON;
