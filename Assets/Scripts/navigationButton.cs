@@ -7,6 +7,11 @@ using Unity.Jobs;
 using Unity.Collections;
 using UnityEngine.EventSystems;
 
+/*
+* To1DArray method is from https://www.dotnetperls.com/flatten-array
+* To2DArray method is from https://stackoverflow.com/a/28113181
+*/
+
 
 public class NavigateButton: MonoBehaviour
 {
@@ -43,6 +48,8 @@ public class NavigateButton: MonoBehaviour
         }
     }
 
+
+    
     private static T[,] Make2DArray<T>(T[] input, int height, int width)
     {
         T[,] output = new T[height, width];
