@@ -3,14 +3,9 @@ using UnityEngine;
 [System.Serializable]
 public class Hallway
 {
-    public string Number {get; set;}
+    public int Number;
     
-    public string shape {get; set;}
+    public string shape;
 
-    public int[] coords {get; set;}
-
-    public static Hallway CreateFromJSON(string jsonString)
-    {
-        return JsonUtility.FromJson<Hallway>(jsonString);
-    }
+    public int[] coords;
 }

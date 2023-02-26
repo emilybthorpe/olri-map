@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,35 +12,39 @@ public class ManageCoordinates : MonoBehaviour
     
     public int[,] coordinateMap;
  
-    TextAsset jsonFile;
+    TextAsset roomsJSON;
+    TextAsset hallwaysJSON;
 
     Rooms rooms;
     Hallways hallways;
 
+    private string logPath;
+
 
     void Start()
     {
-        jsonFile = Resources.Load<TextAsset>("rooms");
-        coordinateMap = new int[500, 750];
-        //ManageRooms manageRooms = new ManageRooms();
-        ManageHallways manageHallways = new ManageHallways();
-        
-        //rooms = manageRooms.roomsFromJSON;
-        hallways = manageHallways.hallwaysFromJSON;
+        setupLogOfMap();
 
-        rooms = JsonUtility.FromJson<Rooms>(jsonFile.text);
+        hallwaysJSON = Resources.Load<TextAsset>("hallways");
+        roomsJSON = Resources.Load<TextAsset>("rooms");
+        coordinateMap = new int[750, 750];
 
+        hallways = JsonUtility.FromJson<Hallways>(hallwaysJSON.text);
+
+        rooms = JsonUtility.FromJson<Rooms>(roomsJSON.text);
 
         // Start my marking the entire map as outside, before marking the speicifcs of the building
-        for (int x = 0; x < 500; x++) {
-            for (int y = 0; y < 750; y++) {
-                coordinateMap[x, y] = -1;
-            }
-        }
+        markAllMapAsOutside();
+
 
         establishRooms();
+
+        establishHallways();
+
+        createLogOfMap();
         
-        // 
+        
+    
         // 0 = inside room (walkable)
         // 1 = wall (not walkable)
         // 2 = hallway (walkable)
@@ -45,6 +52,36 @@ public class ManageCoordinates : MonoBehaviour
         // 
         // Logic: getting from point A to Point B using just walkable areas
     }
+
+    void setupLogOfMap() {
+        //Path of the file
+        logPath = Application.dataPath + "/Map.txt";
+        //Create File if it doesn't exist
+        if(File.Exists(logPath))
+        {
+            File.Delete(logPath);
+        }
+
+        File.WriteAllText(logPath, "Map \n\n");
+        
+    }
+
+    void createLogOfMap() {
+        //Content of the file
+        string content = this.ToString();
+        //Add some to text to it
+        File.AppendAllText(logPath, "/n/n");
+        File.AppendAllText(logPath, content);
+    }
+
+    void markAllMapAsOutside() {
+        for (int x = 0; x < 750; x++) {
+            for (int y = 0; y < 750; y++) {
+                coordinateMap[x, y] = -1;
+            }
+        }
+    }
+
 
     /// <summary>
     /// Returns true if given point is inside a room
@@ -81,7 +118,7 @@ public class ManageCoordinates : MonoBehaviour
             {
                 for(int y = coordinates[1]; y < coordinates[3]; y++) 
                 {
-                    coordinateMap[x, y] = 2;
+                    coordinateMap[y, x] = 2;
                 }
             }
         }
@@ -93,26 +130,45 @@ public class ManageCoordinates : MonoBehaviour
             int[] coordinates = room.coords;
             if(room.shape.Equals("rect")) {
                 //Mark outer walls
+
+                //Starting from x1 to x2
                 for(int i = coordinates[0]; i <= coordinates[2]; i++) {
-                    coordinateMap[i, coordinates[1]] = 1;
-                    coordinateMap[i, coordinates[3]] = 1;
+                    //mark current x, y1
+                    coordinateMap[coordinates[1], i] = 1;
+                    //mark current x, y2
+                    coordinateMap[coordinates[3], i] = 1;
                 }
-                for (int i = coordinates[1]; i <= coordinates[2]; i++)
+                //starting from y1 to x2
+                for (int i = coordinates[1]; i <= coordinates[3]; i++)
                 {
-                    coordinateMap[coordinates[0], i] = 1;
-                    coordinateMap[coordinates[2], i] = 1;
+                    coordinateMap[i, coordinates[0]] = 1;
+                    coordinateMap[i, coordinates[2]] = 1;
                 }
                 //Mark inside room
                 for(int x = coordinates[0] + 1; x < coordinates[2]; x++)
                 {
                     for(int y = coordinates[1] + 1; y < coordinates[3]; y++) 
                     {
-                        coordinateMap[x, y] = 0;
+                        coordinateMap[y, x] = 0;
                     }
                 }
 
             }
             //TODO: create code to mark polygons 
         }
+    }
+
+    public override string ToString()
+    {
+        StringBuilder sb = new StringBuilder(); 
+        for (int i = 0; i < coordinateMap.GetLength(0); i++)
+        {
+            for (int j = 0; j < coordinateMap.GetLength(1); j++)
+            {
+                sb.Append(coordinateMap[i,j] + "\t");
+            }
+            sb.Append("\n");
+        }
+        return sb.ToString();
     }
 }

@@ -54,8 +54,12 @@
             "Number": 11,
             "shape": "rect",
             "coords": [631,157,623,279]
+        }, 
+        {
+            "Number": 12,
+            "shape": "rect",
+            "coords": [427,156,632,173]
         }
-
     ]
 
 }
