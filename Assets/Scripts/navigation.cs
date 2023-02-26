@@ -4,7 +4,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.IO;
-
+using System.Threading.Tasks;
+using Unity.Jobs;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -13,36 +15,12 @@ using UnityEngine.EventSystems;
 Adapted with modifications from https://dotnetcoretutorials.com/2020/07/25/a-search-pathfinding-algorithm-in-c/
 **/
 
-public class Navigation: MonoBehaviour
+public class Navigation
 {
 
-    public ManageCoordinates coordinateManager;
+    public static ManageCoordinates coordinateManager;
 
-    int[,] map;
-
-    private List<Point> route = new List<Point>();
-    
-
-    void Start()
-    {
-        StartCoroutine(getCompletedMap());
-        
-        //Testing:
-        
-    }
-
-    IEnumerator getCompletedMap()
-    {
-        //Wait for 5 seconds then get map
-        while(!coordinateManager.finishedSettingUpMap) 
-        {
-            yield return new WaitForSeconds(5);
-        }
-        map = coordinateManager.coordinateMap;
-        Debug.Log(map.ToString());
-
-        navigate(510,132,546,134);
-    }
+    private static List<Point> route = new List<Point>();
 
     
     public List<Point> getRoute() 
@@ -50,7 +28,7 @@ public class Navigation: MonoBehaviour
         return route;
     }
 
-    public void logMapToFile(string mapString)
+    private static void logMapToFile(string mapString)
     {
         string logPath = Application.dataPath + "/pathMap.txt";
         //Delete file if already exists
@@ -64,7 +42,7 @@ public class Navigation: MonoBehaviour
         File.AppendAllText(logPath, "/n/n" + mapString);
     }
 
-    public void navigate(int startX, int startY, int endX, int endY)
+    public static string navigate(int startX, int startY, int endX, int endY, int [,] map)
     {
         var start = new Tile();
         start.Y = startY;
@@ -81,12 +59,13 @@ public class Navigation: MonoBehaviour
         var visitedTiles = new List<Tile>();
         
         
-        string path = getBestPath(finish, activeTiles, visitedTiles);
+        string path = getBestPath(finish, activeTiles, visitedTiles, map);
         Debug.Log("Reached destination");
         logMapToFile(path);
+        return path;
     }
 
-    private string getBestPath(Tile finish, List<Tile> activeTiles, List<Tile> visitedTiles)
+    private static string getBestPath(Tile finish, List<Tile> activeTiles, List<Tile> visitedTiles, int [,] map)
     {
         while (activeTiles.Any())
         {
@@ -94,7 +73,7 @@ public class Navigation: MonoBehaviour
 
             if (checkTile.X == finish.X && checkTile.Y == finish.Y)
             {
-                return getPath(checkTile);
+                return getPath(checkTile, map);
             }
 
             visitedTiles.Add(checkTile);
@@ -130,7 +109,7 @@ public class Navigation: MonoBehaviour
         return generateStringBuilderOfMap(map).ToString();
     }
 
-    private string getPath(Tile checkTile)
+    private static string getPath(Tile checkTile, int[,] map)
     {
         StringBuilder sb = new StringBuilder(); 
         var tile = checkTile;
@@ -152,7 +131,7 @@ public class Navigation: MonoBehaviour
         }
     }
 
-    private StringBuilder generateStringBuilderOfMap(int[,] outMap)
+    private static StringBuilder generateStringBuilderOfMap(int[,] outMap)
     {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < outMap.GetLength(0); i++)
@@ -171,7 +150,7 @@ public class Navigation: MonoBehaviour
         return sb;
     }
 
-    private List<Tile> GetWalkableTiles(int[,] map, Tile currentTile, Tile targetTile)
+    private static List<Tile> GetWalkableTiles(int[,] map, Tile currentTile, Tile targetTile)
     {
         var possibleTiles = new List<Tile>()
         {

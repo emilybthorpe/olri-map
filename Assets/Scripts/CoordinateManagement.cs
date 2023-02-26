@@ -48,7 +48,7 @@ public class ManageCoordinates : MonoBehaviour
         createLogOfMap();
         
         finishedSettingUpMap = true;
-        
+        Debug.Log("finished setting up map");
     
         // 0 = inside room (walkable)
         // 1 = wall (not walkable)
