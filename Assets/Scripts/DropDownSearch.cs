@@ -11,16 +11,18 @@ public class DropDownSearch: MonoBehaviour
     public InputField searchField;
     public Dropdown resultsDropdown;
 
+    TextAsset jsonFile;
+
+
     private List<string> roomNumbers;
 
-    private ManageRooms manageRooms;
+    //private ManageRooms manageRooms;
 
     void Start()
     {
-        // Retrieve the list of all room numbers and store it in the roomNumbers list
-      //  Debug.Log("test");
-        manageRooms  = new ManageRooms();
-        Debug.Log(manageRooms.roomsFromJSON.rooms);
+        jsonFile = Resources.Load<TextAsset>("rooms");
+
+        //Debug.Log(Rooms.CreateFromJSON(jsonFile.text));
         roomNumbers = GetAllRoomNumbers();
         
 
@@ -58,11 +60,13 @@ public class DropDownSearch: MonoBehaviour
     /// </summary>
     List<string> GetAllRoomNumbers()
     {
-        RoomInfo[] rooms = manageRooms.roomsFromJSON.rooms;
+        Rooms roomsFromJSON = JsonUtility.FromJson<Rooms>(jsonFile.text);
+        Debug.Log(roomsFromJSON.ToString());
         List<string> roomNames = new List<string>();
-        foreach (RoomInfo room in rooms) 
+        foreach (RoomInfo room in roomsFromJSON.rooms) 
         {
-            roomNames.Add(room.Number);
+            Debug.Log("Number: " + room.Number);
+            roomNames.Add(room.Number.ToString());
         }
         return roomNames;
     }

@@ -9,24 +9,29 @@ public class ManageCoordinates : MonoBehaviour
     
     public int[,] coordinateMap;
  
+    TextAsset jsonFile;
+
     Rooms rooms;
     Hallways hallways;
 
 
     void Start()
     {
+        jsonFile = Resources.Load<TextAsset>("rooms");
         coordinateMap = new int[500, 750];
-        ManageRooms manageRooms = new ManageRooms();
+        //ManageRooms manageRooms = new ManageRooms();
         ManageHallways manageHallways = new ManageHallways();
         
-        rooms = manageRooms.roomsFromJSON;
+        //rooms = manageRooms.roomsFromJSON;
         hallways = manageHallways.hallwaysFromJSON;
+
+        rooms = JsonUtility.FromJson<Rooms>(jsonFile.text);
 
 
         // Start my marking the entire map as outside, before marking the speicifcs of the building
         for (int x = 0; x < 500; x++) {
             for (int y = 0; y < 750; y++) {
-                coordinateMap[x, y] = -1;;
+                coordinateMap[x, y] = -1;
             }
         }
 
