@@ -66,8 +66,14 @@ public class DropDownSearch: MonoBehaviour
         foreach (RoomInfo room in roomsFromJSON.rooms) 
         {
             Debug.Log("Number: " + room.Number);
-            roomNames.Add(room.Number.ToString());
+            if(RoomNumberIsValid(room.Number)) {
+                roomNames.Add(room.Number.ToString());
+            }
         }
         return roomNames;
+    }
+
+    bool RoomNumberIsValid(int number) {
+        return number.ToString().Length == 3;
     }
 }

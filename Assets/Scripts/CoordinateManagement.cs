@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 public class ManageCoordinates : MonoBehaviour
 {
     
-    public int[,] coordinateMap;
+    public int[,] coordinateMap {get; set;}
  
     TextAsset roomsJSON;
     TextAsset hallwaysJSON;
@@ -19,6 +19,8 @@ public class ManageCoordinates : MonoBehaviour
     Hallways hallways;
 
     private string logPath;
+
+    public bool finishedSettingUpMap = false;
 
 
     void Start()
@@ -37,12 +39,14 @@ public class ManageCoordinates : MonoBehaviour
         markAllMapAsOutside();
 
 
+        establishHallways();
         establishRooms();
 
-        establishHallways();
+        
 
         createLogOfMap();
         
+        finishedSettingUpMap = true;
         
     
         // 0 = inside room (walkable)
@@ -129,21 +133,23 @@ public class ManageCoordinates : MonoBehaviour
         {
             int[] coordinates = room.coords;
             if(room.shape.Equals("rect")) {
-                //Mark outer walls
+                //Mark outer walls if 3 digit room
+                if(room.Number.ToString().Length == 3) {
+                    //Starting from x1 to x2
+                    for(int i = coordinates[0]; i <= coordinates[2]; i++) {
+                        //mark current x, y1
+                        coordinateMap[coordinates[1], i] = 1;
+                        //mark current x, y2
+                        coordinateMap[coordinates[3], i] = 1;
+                    }
+                    //starting from y1 to x2
+                    for (int i = coordinates[1]; i <= coordinates[3]; i++)
+                    {
+                        coordinateMap[i, coordinates[0]] = 1;
+                        coordinateMap[i, coordinates[2]] = 1;
+                    }
+                }
 
-                //Starting from x1 to x2
-                for(int i = coordinates[0]; i <= coordinates[2]; i++) {
-                    //mark current x, y1
-                    coordinateMap[coordinates[1], i] = 1;
-                    //mark current x, y2
-                    coordinateMap[coordinates[3], i] = 1;
-                }
-                //starting from y1 to x2
-                for (int i = coordinates[1]; i <= coordinates[3]; i++)
-                {
-                    coordinateMap[i, coordinates[0]] = 1;
-                    coordinateMap[i, coordinates[2]] = 1;
-                }
                 //Mark inside room
                 for(int x = coordinates[0] + 1; x < coordinates[2]; x++)
                 {
