@@ -157,7 +157,7 @@ public class Navigation
         var possibleTiles = new List<Tile>()
         {
             new Tile { X = currentTile.X, Y = currentTile.Y - 1, Parent = currentTile, Cost = currentTile.Cost + 1 },
-            new Tile { X = currentTile.X, Y = currentTile.Y + 1, Parent = currentTile, Cost = currentTile.Cost + 1},
+            new Tile { X = currentTile.X, Y = currentTile.Y + 1, Parent = currentTile, Cost = currentTile.Cost + 1 },
             new Tile { X = currentTile.X - 1, Y = currentTile.Y, Parent = currentTile, Cost = currentTile.Cost + 1 },
             new Tile { X = currentTile.X + 1, Y = currentTile.Y, Parent = currentTile, Cost = currentTile.Cost + 1 },
         };
@@ -165,16 +165,7 @@ public class Navigation
         possibleTiles.ForEach(tile => tile.SetDistance(targetTile.X, targetTile.Y));
 
         var maxX = map.GetLength(0) - 1;
-        var maxY = map.GetLength(1) - 1;
-
-        var newTiles = possibleTiles
-                .Where(tile => tile.X >= 0 && tile.X <= maxX)
-                .Where(tile => tile.Y >= 0 && tile.Y <= maxY)
-                .ToList();
-
-        newTiles.ForEach(t => Debug.Log(t.ToString()));
-        newTiles.ForEach(t => Debug.Log(map[t.Y, t.X]));
-        
+        var maxY = map.GetLength(1) - 1;   
 
         return possibleTiles
                 .Where(tile => tile.X >= 0 && tile.X <= maxX)
