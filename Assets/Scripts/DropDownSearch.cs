@@ -73,6 +73,10 @@ public class DropDownSearch: MonoBehaviour
         return roomNames;
     }
 
+    /// <summary>
+    /// Check if a room number is valid (ie, having exactly 3 digits)
+    /// 4 digit room numbers are used to represent doorways/entrances, which should not be considered
+    /// </summary>
     bool RoomNumberIsValid(int number) {
         return number.ToString().Length == 3;
     }

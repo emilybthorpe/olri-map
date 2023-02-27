@@ -58,6 +58,10 @@ public class ManageCoordinates : MonoBehaviour
         // Logic: getting from point A to Point B using just walkable areas
     }
 
+
+    /// <summary>
+    /// Prepares a text file to be populated with map information, deleting old verisions
+    /// </summary>
     void setupLogOfMap() {
         //Path of the file
         logPath = Application.dataPath + "/Map.txt";
@@ -67,10 +71,12 @@ public class ManageCoordinates : MonoBehaviour
             File.Delete(logPath);
         }
 
-        File.WriteAllText(logPath, "Map \n\n");
-        
+        File.WriteAllText(logPath, "Map \n\n");  
     }
 
+    /// <summary>
+    /// Generates text file containing map information
+    /// </summary>
     void createLogOfMap() {
         //Content of the file
         string content = this.ToString();
@@ -79,6 +85,9 @@ public class ManageCoordinates : MonoBehaviour
         File.AppendAllText(logPath, content);
     }
 
+    /// <summary>
+    /// Marks the entire map as outside and inaccseable  (value: -1)
+    /// </summary>
     void markAllMapAsOutside() {
         for (int x = 0; x < 750; x++) {
             for (int y = 0; y < 750; y++) {
@@ -89,7 +98,7 @@ public class ManageCoordinates : MonoBehaviour
 
 
     /// <summary>
-    /// Returns true if given point is inside a room
+    /// Returns true if given point is inside any room
     /// </summary>
     bool checkIfPointInRoom(int x, int y) {
         return coordinateMap[x, y] == 1;
@@ -107,7 +116,7 @@ public class ManageCoordinates : MonoBehaviour
 
         foreach (RoomInfo room in rooms.rooms)
         {
-            if(room.coords.Contains(x) && room.coords.Contains(y)) {
+            if(x > room.coords[0] && x < room.coords[2] && y > room.coords[1] && y < room.coords[3]) {
                 return room;
             }
         }
@@ -115,6 +124,9 @@ public class ManageCoordinates : MonoBehaviour
         return null;
     }
 
+    /// <summary>
+    /// mark hallway locations in map
+    /// </summary>
     void establishHallways() {
         foreach (Hallway hallway in hallways.hallways)
         {
@@ -129,6 +141,9 @@ public class ManageCoordinates : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Mark room's walls and inner sections in map
+    /// </summary>
     void establishRooms() {
         foreach (RoomInfo room in rooms.rooms) 
         {
@@ -165,6 +180,9 @@ public class ManageCoordinates : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// returns the map represenation as a string
+    /// </summary>
     public override string ToString()
     {
         StringBuilder sb = new StringBuilder(); 

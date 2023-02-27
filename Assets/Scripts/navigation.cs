@@ -109,26 +109,28 @@ public class Navigation
         return generateStringBuilderOfMap(map).ToString();
     }
 
+    /// <summary>
+    /// Generates a represenation of the coordinate map with the path marked
+    /// </summary> 
+    /// <param name="checkTile">final tile in path</param>
+    /// <param name="map"><c>int[,]</c> coordinate map to check</param>
     private static string getPath(Tile checkTile, int[,] map)
     {
         StringBuilder sb = new StringBuilder(); 
         var tile = checkTile;
 
         int[,] mapWithPath = map;
-        
-        while (true)
-        {
-            if (map[tile.Y, tile.X] == 0 || map[tile.Y, tile.X] == 2)
+
+        while (tile != null) {
+            if (map[tile.Y, tile.X] == 0 || map[tile.Y, tile.X] == 2) //if traversable area
             {
-                mapWithPath[tile.Y, tile.X] = 3;
+                mapWithPath[tile.Y, tile.X] = 3; // mark as path 
             }
             tile = tile.Parent;
-            if (tile == null)
-            {
-                sb = generateStringBuilderOfMap(mapWithPath);
-                return sb.ToString();
-            }
         }
+
+        sb = generateStringBuilderOfMap(mapWithPath);
+        return sb.ToString();
     }
 
     private static StringBuilder generateStringBuilderOfMap(int[,] outMap)
