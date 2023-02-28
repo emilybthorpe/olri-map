@@ -1,6 +1,17 @@
 {
   "RoslynExtensionsOptions": {
     "EnableAnalyzersSupport": true,
-    "LocationPaths": ["./NuGet"]
+    "enableDecompilationSupport": true,
+        "enableAnalyzersSupport": true,
+        "enableImportCompletion": true,
+        "enableAsyncCompletion": true,
+        "documentAnalysisTimeoutMs": 600000000,
+        "LocationPaths": [
+            "c:/Users/Vahid/.vscode/extensions/josefpihrt-vscode.roslynator-3.2.2/roslyn/common",
+            "c:/Users/Vahid/.vscode/extensions/josefpihrt-vscode.roslynator-3.2.2/roslyn/analyzers",
+            "c:/Users/Vahid/.vscode/extensions/josefpihrt-vscode.roslynator-3.2.2/roslyn/refactorings",
+            "c:/Users/Vahid/.vscode/extensions/josefpihrt-vscode.roslynator-3.2.2/roslyn/fixes"
+        ]
   }
 }
+

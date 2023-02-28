@@ -108,7 +108,7 @@ public class ManageCoordinates : MonoBehaviour
     /// Returns a Room containing the inputed point (represented as x,y coordinates)
     /// If no such room exists, or the point is outside the building, returns null
     /// </summary>
-    RoomInfo getRoomContainingPoint(int x, int y) {
+    public RoomInfo GetRoomContainingPoint(int x, int y) {
 
         if (!checkIfPointInRoom(x, y)) {
             return null;
