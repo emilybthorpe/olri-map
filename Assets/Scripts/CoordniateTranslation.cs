@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using System.Text;
-
+using System.Collections.Generic;
 class Coordinate_Translation {
     //true is positive
     Boolean positive_or_negative_x = false;
