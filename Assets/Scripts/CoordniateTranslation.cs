@@ -4,9 +4,9 @@ using System.Text;
 
 class Coordinate_Translation {
     //true is positive
-    Boolean positive_or_negative_x;
+    Boolean positive_or_negative_x = false;
     //true is positive
-    Boolean positive_or_negative_y;
+    Boolean positive_or_negative_y = false;
     //true means turn right
     Boolean turn_right = false;
     //true means turn left
