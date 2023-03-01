@@ -28,6 +28,20 @@ public class Navigation
         return route;
     }
 
+    /// <Summary>
+    /// Generates start end location from center of first room to center of second room
+    /// </Summary>
+    public StartEndLocation GetStartEndLocationFromRoomNumbers(int room1, int room2) {
+        
+        RoomInfo firstRoom = coordinateManager.GetRoomFromNumber(room1);
+        RoomInfo secondRoom = coordinateManager.GetRoomFromNumber(room2);
+        int x1 = (firstRoom.coords[0] + firstRoom.coords[2])/2;
+        int y1 = (firstRoom.coords[1] + firstRoom.coords[3]) / 2;
+        int x2 = (secondRoom.coords[0] + secondRoom.coords[2])/2;
+        int y2 = (secondRoom.coords[1] + secondRoom.coords[3]) / 2;
+        return new StartEndLocation(x1,y1,x2,y2);
+    }
+
     private static void logMapToFile(string mapString)
     {
         string logPath = Application.dataPath + "/pathMap.txt";
