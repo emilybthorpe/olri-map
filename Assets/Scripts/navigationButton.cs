@@ -42,7 +42,7 @@ public class NavigateButton: MonoBehaviour
     {
         Button btn = navigateButton.GetComponent<Button>();
         startEndLocation = new StartEndLocation(510, 132,546,134);
-        btn.onClick.AddListener(TaskOnClick());
+        btn.onClick.AddListener(TaskOnClick);
     }
 
     public struct NavigationJob : IJob
