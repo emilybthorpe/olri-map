@@ -44,6 +44,11 @@
             "Number": 1450,
             "shape": "rect",
             "coords": [535,148,557,165]
+        },
+        {
+            "Number": 222,
+            "shape": "rect",
+            "coords": [0,0,0,0]
         }
     ]
 }

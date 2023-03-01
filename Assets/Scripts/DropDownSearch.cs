@@ -4,12 +4,12 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-
+using TMPro;
 
 public class DropDownSearch: MonoBehaviour
 {
-    public InputField searchField;
-    public Dropdown resultsDropdown;
+    public TMP_InputField searchField;
+    public TMP_Dropdown resultsDropdown;
 
     TextAsset jsonFile;
 
