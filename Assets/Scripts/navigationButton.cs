@@ -23,11 +23,15 @@ public class NavigateButton: MonoBehaviour
 
     public StartEndLocation startEndLocation;
     
+    public string startRoom;
+    public string endRoom;
 
     void Start()
     {
         Button btn = navigateButton.GetComponent<Button>();
-        startEndLocation = new StartEndLocation(510, 132,546,134);
+        //startEndLocation = new StartEndLocation(510, 132,546,134);
+        startEndLocation = Navigation.GetStartEndLocationFromRoomNumbers(144,145);
+
         btn.onClick.AddListener(TaskOnClick);
     }
 
