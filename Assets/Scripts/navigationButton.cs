@@ -13,16 +13,36 @@ using UnityEngine.EventSystems;
 */
 
 
+struct StartEndLocation
+{
+    public int StartX { get; }
+    public int StartY { get; }
+    public int EndX { get; }
+    public int EndY { get; }
+
+    public StartEndLocation(int startX, int startY, int endX, int endY) {
+        StartX = startX;
+        StartY = startY;
+        EndX = endX;
+        EndY = endY;
+    }
+}
+
+
 public class NavigateButton: MonoBehaviour
 {
     public Button navigateButton;
 
     public ManageCoordinates manageCoordinates;
+    
+
+    private StartEndLocation startEndLocation;
 
     void Start()
     {
         Button btn = navigateButton.GetComponent<Button>();
-        btn.onClick.AddListener(TaskOnClick);
+        startEndLocation = new StartEndLocation(510, 132,546,134);
+        btn.onClick.AddListener(TaskOnClick());
     }
 
     public struct NavigationJob : IJob
@@ -92,10 +112,10 @@ public class NavigateButton: MonoBehaviour
         // Temp values
         var job = new NavigationJob
         {
-            startX = 510,
-            startY = 132,
-            endX = 546,
-            endY = 134,
+            startX = startEndLocation.StartX,
+            startY = startEndLocation.StartY,
+            endX = startEndLocation.EndX,
+            endY = startEndLocation.EndY,
             path = path,
             map = map
         };
