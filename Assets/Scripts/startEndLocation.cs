@@ -1,4 +1,4 @@
-struct StartEndLocation
+public struct StartEndLocation
 {
     public int StartX { get; }
     public int StartY { get; }
