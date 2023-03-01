@@ -23,6 +23,8 @@ public class ManageCoordinates : MonoBehaviour
 
     public bool finishedSettingUpMap = false;
 
+    private Dictionary<int, RoomInfo> roomNumbers;
+
 
     void Start()
     {
@@ -31,6 +33,7 @@ public class ManageCoordinates : MonoBehaviour
         hallwaysJSON = Resources.Load<TextAsset>("hallways");
         roomsJSON = Resources.Load<TextAsset>("rooms");
         coordinateMap = new int[750, 750];
+        roomNumbers = new Dictionary<int, RoomInfo>();
 
         hallways = JsonUtility.FromJson<Hallways>(hallwaysJSON.text);
 
@@ -104,6 +107,16 @@ public class ManageCoordinates : MonoBehaviour
         return coordinateMap[x, y] == 1;
     }
 
+    public RoomInfo GetRoomFromNumber(int number) {
+        // verify room number is valid
+        if(number >= roomNumbers.OrderBy(kvp => kvp.Value).First().Key && number <= roomNumbers.OrderBy(kvp => kvp.Value).Last().Key) {
+            return roomNumbers[number];
+        }
+
+        return null;
+    }
+
+
     /// <summary>
     /// Returns a Room containing the inputed point (represented as x,y coordinates)
     /// If no such room exists, or the point is outside the building, returns null
@@ -148,6 +161,7 @@ public class ManageCoordinates : MonoBehaviour
         foreach (RoomInfo room in rooms.rooms) 
         {
             int[] coordinates = room.coords;
+            roomNumbers.Add(room.Number, room);
             if(room.shape.Equals("rect")) {
                 //Mark outer walls if 3 digit room
                 if(room.Number.ToString().Length == 3) {
