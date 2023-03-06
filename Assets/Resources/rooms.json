@@ -3,12 +3,12 @@
         {
             "Number": 141,
             "shape": "rect", 
-            "coords": [460,111,428,155]
+            "coords": [426,107,461,159]
         },
         {
             "Number": 142,
             "shape": "rect", 
-            "coords": [492,154,461,111]
+            "coords": [460,108,495,160]
         },
         {
             "Number": 143,
@@ -24,31 +24,6 @@
             "Number": 147,
             "shape": "rect", 
             "coords": [567,112,612,154]
-        },
-        {
-            "Number": 1410,
-            "shape": "rect",
-            "coords": [436,150,454,165]
-        },
-        {
-            "Number": 1420,
-            "shape": "rect",
-            "coords": [471,148,486,164]
-        },
-        {
-            "Number": 1430,
-            "shape": "rect",
-            "coords": [503,147,519,164]
-        },
-        {
-            "Number": 1450,
-            "shape": "rect",
-            "coords": [535,148,557,165]
-        },
-        {
-            "Number": 222,
-            "shape": "rect",
-            "coords": [0,0,0,0]
         }
     ]
 }

@@ -33,10 +33,11 @@ public class NavigateButton: MonoBehaviour
         Button btn = navigateButton.GetComponent<Button>();
         //startEndLocation = new StartEndLocation(510, 132,546,134);
 
+       
         //For testing:
-        setRooms("143", "144");
+        setRooms("143", "145");
 
-        processStartEndRoom();
+
 
         btn.onClick.AddListener(TaskOnClick);
     }
@@ -46,7 +47,7 @@ public class NavigateButton: MonoBehaviour
         int startRoomNumber = int.Parse(startRoom);
         int endRoomNumber = int.Parse(endRoom);
         
-        startEndLocation = Navigation.GetStartEndLocationFromRoomNumbers(startRoomNumber,endRoomNumber);
+        startEndLocation = Navigation.GetStartEndLocationFromRoomNumbers(manageCoordinates, startRoomNumber,endRoomNumber);
     }
 
     void setRooms(string startRoom, string endRoom) {
@@ -68,9 +69,11 @@ public class NavigateButton: MonoBehaviour
         {
             string pathStr = Navigation.navigate(startX, startY, endX, endY, Make2DArray<int>(map.ToArray(), 750, 750));
             Debug.Log("Reached destination");
+            Debug.Log(pathStr.Length);
+            Debug.Log(path.Length);
 
             // Copy the path string to the NativeArray
-            for (int i = 0; i < pathStr.Length; i++)
+            for (int i = 0; i < pathStr.Length - 1; i++)
             {
                 path[i] = pathStr[i];
             }
@@ -113,10 +116,11 @@ public class NavigateButton: MonoBehaviour
 
 
     void TaskOnClick(){
-
-
+         Debug.Log(manageCoordinates.GetRoomContainingPoint(510, 132).Number);
+        Debug.Log(manageCoordinates.GetRoomContainingPoint(546,134).Number);
+        processStartEndRoom();
 		// Create the job
-        var path = new NativeArray<char>(256, Allocator.TempJob);
+        var path = new NativeArray<char>(1659974, Allocator.TempJob);
         var map = new NativeArray<int>(To1DArray(manageCoordinates.coordinateMap), Allocator.TempJob);
         // Temp values
         var job = new NavigationJob
@@ -139,7 +143,7 @@ public class NavigateButton: MonoBehaviour
         string result = new string(path.ToArray()).TrimEnd('\0');
         path.Dispose();
         map.Dispose();
-        Debug.Log(result);
+        Navigation.logMapToFile(result);
 	}
 
 

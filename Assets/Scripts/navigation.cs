@@ -18,8 +18,6 @@ Adapted with modifications from https://dotnetcoretutorials.com/2020/07/25/a-sea
 public class Navigation
 {
 
-    public static ManageCoordinates coordinateManager;
-
     private static List<Point> route = new List<Point>();
 
     
@@ -31,8 +29,8 @@ public class Navigation
     /// <Summary>
     /// Generates start end location from center of first room to center of second room
     /// </Summary>
-    public static StartEndLocation GetStartEndLocationFromRoomNumbers(int room1, int room2) {
-        
+    public static StartEndLocation GetStartEndLocationFromRoomNumbers(ManageCoordinates coordinateManager, int room1, int room2) 
+    {    
         RoomInfo firstRoom = coordinateManager.GetRoomFromNumber(room1);
         RoomInfo secondRoom = coordinateManager.GetRoomFromNumber(room2);
         int x1 = (firstRoom.coords[0] + firstRoom.coords[2])/2;
@@ -42,7 +40,7 @@ public class Navigation
         return new StartEndLocation(x1,y1,x2,y2);
     }
 
-    private static void logMapToFile(string mapString)
+    public static void logMapToFile(string mapString)
     {
         string logPath = Application.dataPath + "/pathMap.txt";
         //Delete file if already exists
@@ -84,7 +82,7 @@ public class Navigation
         while (activeTiles.Any())
         {
             var checkTile = activeTiles.OrderBy(x => x.CostDistance).First();
-
+            Debug.Log(checkTile);
             if (checkTile.X == finish.X && checkTile.Y == finish.Y)
             {
                 return getPath(checkTile, map);

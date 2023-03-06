@@ -43,9 +43,9 @@ public class ManageCoordinates : MonoBehaviour
         markAllMapAsOutside();
 
 
-        establishHallways();
+        
         establishRooms();
-
+        establishHallways();
         
 
         createLogOfMap();
@@ -74,7 +74,7 @@ public class ManageCoordinates : MonoBehaviour
             File.Delete(logPath);
         }
 
-        File.WriteAllText(logPath, "Map \n\n");  
+        File.WriteAllText(logPath, "");  
     }
 
     /// <summary>
@@ -104,16 +104,22 @@ public class ManageCoordinates : MonoBehaviour
     /// Returns true if given point is inside any room
     /// </summary>
     bool checkIfPointInRoom(int x, int y) {
-        return coordinateMap[x, y] == 1;
+        Debug.Log(coordinateMap[y,x]);
+        return coordinateMap[y, x] == 0;
     }
 
     public RoomInfo GetRoomFromNumber(int number) {
         // verify room number is valid
-        if(number >= roomNumbers.OrderBy(kvp => kvp.Value).First().Key && number <= roomNumbers.OrderBy(kvp => kvp.Value).Last().Key) {
+        Debug.Log(number);
+        try
+        {
             return roomNumbers[number];
         }
-
-        return null;
+        catch (System.Exception)
+        {
+            
+            return null;
+        }
     }
 
 
@@ -124,6 +130,7 @@ public class ManageCoordinates : MonoBehaviour
     public RoomInfo GetRoomContainingPoint(int x, int y) {
 
         if (!checkIfPointInRoom(x, y)) {
+            
             return null;
         }
 
@@ -171,11 +178,16 @@ public class ManageCoordinates : MonoBehaviour
             // For now, if a room's shape is not a rectangle, leave it be
             // TODO: implement other room shapes 
             if(!room.shape.Equals("rect")) {
+                Debug.Log("Not rect!");
                 continue;
             }
 
+            // Mark inside room
+            markCoordinatesWithValue(coordinates, 0 /*o, inside room*/, 1 /*start outside wall*/);
+
             // If this is not a valid room number, continue
             if(room.Number.ToString().Length != 3) {
+                Debug.Log("Not a real room");
                 continue;
             }
 
@@ -193,9 +205,6 @@ public class ManageCoordinates : MonoBehaviour
                 coordinateMap[i, coordinates[0]] = 1;
                 coordinateMap[i, coordinates[2]] = 1;
             }
-            
-            // Mark inside room
-            markCoordinatesWithValue(coordinates, 0 /*o, inside room*/, 1 /*start outside wall*/);
         }
     }
 
