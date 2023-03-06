@@ -26,13 +26,32 @@ public class NavigateButton: MonoBehaviour
     public string startRoom;
     public string endRoom;
 
+    
+
     void Start()
     {
         Button btn = navigateButton.GetComponent<Button>();
         //startEndLocation = new StartEndLocation(510, 132,546,134);
-        startEndLocation = Navigation.GetStartEndLocationFromRoomNumbers(144,145);
+
+        //For testing:
+        setRooms("143", "144");
+
+        processStartEndRoom();
 
         btn.onClick.AddListener(TaskOnClick);
+    }
+
+    void processStartEndRoom() {
+        // Make sure the room numbers are in fact numbers
+        int startRoomNumber = int.Parse(startRoom);
+        int endRoomNumber = int.Parse(endRoom);
+        
+        startEndLocation = Navigation.GetStartEndLocationFromRoomNumbers(startRoomNumber,endRoomNumber);
+    }
+
+    void setRooms(string startRoom, string endRoom) {
+        this.startRoom = startRoom;
+        this.endRoom = endRoom;
     }
 
     public struct NavigationJob : IJob
