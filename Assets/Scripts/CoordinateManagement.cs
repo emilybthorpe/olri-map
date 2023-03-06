@@ -92,8 +92,8 @@ public class ManageCoordinates : MonoBehaviour
     /// Marks the entire map as outside and inaccseable  (value: -1)
     /// </summary>
     void markAllMapAsOutside() {
-        for (int x = 0; x < 750; x++) {
-            for (int y = 0; y < 750; y++) {
+        for (int x = 0; x < coordinateMap.GetLength(0); x++) {
+            for (int y = 0; y < coordinateMap.GetLength(1); y++) {
                 coordinateMap[x, y] = -1;
             }
         }
@@ -144,12 +144,17 @@ public class ManageCoordinates : MonoBehaviour
         foreach (Hallway hallway in hallways.hallways)
         {
             int[] coordinates = hallway.coords;
-            for(int x = coordinates[0]; x < coordinates[2]; x++)
+            markCoordinatesWithValue(coordinates, 2);
+        }
+    }
+
+    private void markCoordinatesWithValue(int[] coordinates, int value, int modifier=0)
+    {
+        for (int x = coordinates[0] + modifier; x < coordinates[2]; x++)
+        {
+            for (int y = coordinates[1] + modifier; y < coordinates[3]; y++)
             {
-                for(int y = coordinates[1]; y < coordinates[3]; y++) 
-                {
-                    coordinateMap[y, x] = 2;
-                }
+                coordinateMap[y, x] = value;
             }
         }
     }
@@ -162,35 +167,35 @@ public class ManageCoordinates : MonoBehaviour
         {
             int[] coordinates = room.coords;
             roomNumbers.Add(room.Number, room);
-            if(room.shape.Equals("rect")) {
-                //Mark outer walls if 3 digit room
-                if(room.Number.ToString().Length == 3) {
-                    //Starting from x1 to x2
-                    for(int i = coordinates[0]; i <= coordinates[2]; i++) {
-                        //mark current x, y1
-                        coordinateMap[coordinates[1], i] = 1;
-                        //mark current x, y2
-                        coordinateMap[coordinates[3], i] = 1;
-                    }
-                    //starting from y1 to x2
-                    for (int i = coordinates[1]; i <= coordinates[3]; i++)
-                    {
-                        coordinateMap[i, coordinates[0]] = 1;
-                        coordinateMap[i, coordinates[2]] = 1;
-                    }
-                }
 
-                //Mark inside room
-                for(int x = coordinates[0] + 1; x < coordinates[2]; x++)
-                {
-                    for(int y = coordinates[1] + 1; y < coordinates[3]; y++) 
-                    {
-                        coordinateMap[y, x] = 0;
-                    }
-                }
-
+            // For now, if a room's shape is not a rectangle, leave it be
+            // TODO: implement other room shapes 
+            if(!room.shape.Equals("rect")) {
+                continue;
             }
-            //TODO: create code to mark polygons 
+
+            // If this is not a valid room number, continue
+            if(room.Number.ToString().Length != 3) {
+                continue;
+            }
+
+            //Mark outer walls if 3 digit room
+            //Starting from x1 to x2
+            for(int i = coordinates[0]; i <= coordinates[2]; i++) {
+                //mark current x, y1
+                coordinateMap[coordinates[1], i] = 1;
+                //mark current x, y2
+                coordinateMap[coordinates[3], i] = 1;
+            }
+            //starting from y1 to x2
+            for (int i = coordinates[1]; i <= coordinates[3]; i++)
+            {
+                coordinateMap[i, coordinates[0]] = 1;
+                coordinateMap[i, coordinates[2]] = 1;
+            }
+            
+            // Mark inside room
+            markCoordinatesWithValue(coordinates, 0 /*o, inside room*/, 1 /*start outside wall*/);
         }
     }
 
