@@ -307,7 +307,7 @@ GameObject:
   - component: {fileID: 107623542}
   - component: {fileID: 107623541}
   - component: {fileID: 107623540}
-  - component: {fileID: 107623539}
+  - component: {fileID: 107623543}
   m_Layer: 5
   m_Name: DestinationLocationDropDown
   m_TagString: Untagged
@@ -337,20 +337,6 @@ RectTransform:
   m_AnchoredPosition: {x: 36.9364, y: -61.508003}
   m_SizeDelta: {x: 221.9745, y: 40.4012}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &107623539
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 107623537}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d702b5303ffa8cb47840b26d1229263d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  searchField: {fileID: 2091511957}
-  resultsDropdown: {fileID: 107623540}
 --- !u!114 &107623540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -449,6 +435,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 107623537}
   m_CullTransparentMesh: 1
+--- !u!114 &107623543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 107623537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d702b5303ffa8cb47840b26d1229263d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  searchField: {fileID: 2091511957}
+  resultsDropdown: {fileID: 107623540}
 --- !u!1 &140458981
 GameObject:
   m_ObjectHideFlags: 0
