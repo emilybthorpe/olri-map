@@ -13,7 +13,7 @@ public class coordinateTranslate : MonoBehaviour
     public static Point[] tester3 = { new Point(0d, 375d), new Point(0d, 125d), new Point(125d, 125d), new Point(125d, 375d), new Point(250d, 375d), new Point(250d, 125d)};
     public static Point[] tester4 = { new Point(250d, 125d), new Point(250d, 375d), new Point(125d, 375d), new Point(125d, 125d), new Point(0d, 125d), new Point(0d, 375d)};
     public static Point[] tester5 = { new Point(0d, 375d), new Point(0d, 125d), new Point(125d, 125d), new Point(125d, 0d), new Point(250d, 0d)};
-    public static Point[] tester6 = { new Point(375d, 375d), new Point(375d, 125d), new Point(125d, 125d), new Point(125d, 0d), new Point(0d, 125d)};
+    public static Point[] tester6 = { new Point(250d, 0d), new Point(125d, 0d), new Point(125d, 125d), new Point(0d, 125d), new Point(0d, 375d)};
 
 
     /*
