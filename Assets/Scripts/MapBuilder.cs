@@ -18,6 +18,10 @@ public class MapBuilder : MonoBehaviour
     public int curRoomNumber; 
     public int destRoomNumber;
 
+
+    public int mapWidth ; 
+    public int mapHeight; 
+
     void Start()
     {
         //declare curRoomNumber and destRoomNumber
@@ -37,6 +41,37 @@ public class MapBuilder : MonoBehaviour
     
 }
 
+void drawMap(char[,] map, int width ,int height){
+    int counter = 0 ; 
+    Debug.Log(map);
+    // List<int[]> pathList = new List<int[2]>();
+    List<List<char>> wallList = new List<List<char>>();
+    
+    
+    for (int k = 0; k < map.GetLength(0); k++){
+        for (int l = 0; l < map.GetLength(1); l++){
+            var val = map[k, l];
+            // if (val == "1"){//check if wall
+            
+            // }
+            // else if (val == "-1"){//check if 
+
+            // }
+            // else if ( val == "0"){//Check if inside room 
+            
+            // }else if (val == "2"){//check if hallway 
+
+            // }else if (val =="*"){//check if path
+               
+            // }
+        }
+    }
+
+    //Create map from map;
+
+
+
+}
 
 void DrawLine(Vector3 pos1, Vector3 pos2, string tag){
     GameObject lineObject = new GameObject("Line");
