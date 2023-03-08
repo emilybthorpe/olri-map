@@ -25,6 +25,21 @@
             "shape": "rect", 
             "coords": [567,112,612,154]
         }
+        {
+            "Number": 148,
+            "shape": "rect", 
+            "coords": [611,106,632,162]
+        },
+        {
+            "Number": 149,
+            "shape": "rect", 
+            "coords": [667,113,632,187]
+        },
+        {
+            "Number": 144,
+            "shape": "rect", 
+            "coords": [529,172,464,218]
+        }
     ]
 }
 
