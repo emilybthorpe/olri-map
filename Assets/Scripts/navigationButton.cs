@@ -65,9 +65,10 @@ public class NavigateButton: MonoBehaviour
 
         public NativeArray<int> map;
 
+
         public void Execute()
         {
-            string pathStr = Navigation.navigate(startX, startY, endX, endY, Make2DArray<int>(map.ToArray(), 750, 750));
+            string pathStr = Navigation.navigate(startX, startY, endX, endY, Make2DArray<int>(map.ToArray(), 750, 750)).Item1;
             Debug.Log("Reached destination");
             Debug.Log(pathStr.Length);
             Debug.Log(path.Length);

@@ -21,10 +21,7 @@ public class Navigation
     private static List<Point> route = new List<Point>();
 
     
-    public List<Point> getRoute() 
-    {
-        return route;
-    }
+    
 
     /// <Summary>
     /// Generates start end location from center of first room to center of second room
@@ -54,7 +51,7 @@ public class Navigation
         File.AppendAllText(logPath, "/n/n" + mapString);
     }
 
-    public static string navigate(int startX, int startY, int endX, int endY, int [,] map)
+    public static (string, List<Point>) navigate(int startX, int startY, int endX, int endY, int [,] map)
     {
         var start = new Tile();
         start.Y = startY;
@@ -70,14 +67,21 @@ public class Navigation
         activeTiles.Add(start);
         var visitedTiles = new List<Tile>();
         
-        
-        string path = getBestPath(finish, activeTiles, visitedTiles, map);
+        (string, List<Point>) path = getBestPath(finish, activeTiles, visitedTiles, map);
+        string stringPath = path.Item1;
         Debug.Log("Reached destination");
-        logMapToFile(path);
+        logMapToFile(stringPath);
         return path;
     }
 
-    private static string getBestPath(Tile finish, List<Tile> activeTiles, List<Tile> visitedTiles, int [,] map)
+    public static List<Point> getRoute() {
+
+        return null;
+    }
+
+    
+
+    private static (string, List<Point>) getBestPath(Tile finish, List<Tile> activeTiles, List<Tile> visitedTiles, int [,] map)
     {
         while (activeTiles.Any())
         {
@@ -85,7 +89,9 @@ public class Navigation
             Debug.Log(checkTile);
             if (checkTile.X == finish.X && checkTile.Y == finish.Y)
             {
-                return getPath(checkTile, map);
+                string path = getPath(checkTile, map);
+                List<Point> route = generateRouteFromMap(map);
+                return (path, route);
             }
 
             visitedTiles.Add(checkTile);
@@ -118,7 +124,7 @@ public class Navigation
         }
         Debug.Log("No path!");
 
-        return generateStringBuilderOfMap(map).ToString();
+        return (null, null);
     }
 
     /// <summary>
@@ -162,6 +168,22 @@ public class Navigation
             sb.Append("\n");
         }
         return sb;
+    }
+
+    private static List<Point> generateRouteFromMap(int[,] outMap)
+    {
+        List<Point> route = new List<Point>();
+        for (int i = 0; i < outMap.GetLength(0); i++)
+        {
+            for (int j = 0; j < outMap.GetLength(1); j++)
+            {
+                if (outMap[i,j] == 3)
+                {
+                    route.Add(new Point(i, j));
+                }
+            }
+        }
+        return route;
     }
 
     private static List<Tile> GetWalkableTiles(int[,] map, Tile currentTile, Tile targetTile)
