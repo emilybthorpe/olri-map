@@ -1,13 +1,13 @@
 public struct Point
 {
-    public Point(double x, double y)
+    public Point(int x, int y)
     {
         X = x;
         Y = y;
     }
 
-    public double X { get; }
-    public double Y { get; }
+    public int X { get; }
+    public int Y { get; }
 
     public override string ToString() => $"({X}, {Y})";
 }

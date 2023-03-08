@@ -8,12 +8,12 @@ public class coordinateTranslate : MonoBehaviour
     public static bool positive_or_negative_x, positive_or_negative_y, turn_right;
 
     //These are tester lists
-    public static Point[] tester1 = { new Point(0d, 0d), new Point(0d, 375d), new Point(250d, 375d), new Point(250d, 125d), new Point(375d, 125d), new Point(375d, 375d)};
-    public static Point[] tester2 = { new Point(375d, 375d), new Point(375d, 125d), new Point(250d, 125d), new Point(250d, 375d), new Point(0d, 375d), new Point(0d, 0d)};
-    public static Point[] tester3 = { new Point(0d, 375d), new Point(0d, 125d), new Point(125d, 125d), new Point(125d, 375d), new Point(250d, 375d), new Point(250d, 125d)};
-    public static Point[] tester4 = { new Point(250d, 125d), new Point(250d, 375d), new Point(125d, 375d), new Point(125d, 125d), new Point(0d, 125d), new Point(0d, 375d)};
-    public static Point[] tester5 = { new Point(0d, 375d), new Point(0d, 125d), new Point(125d, 125d), new Point(125d, 0d), new Point(250d, 0d)};
-    public static Point[] tester6 = { new Point(250d, 0d), new Point(125d, 0d), new Point(125d, 125d), new Point(0d, 125d), new Point(0d, 375d)};
+    public static Point[] tester1 = { new Point(0, 0), new Point(0, 375), new Point(250, 375), new Point(250, 125), new Point(375, 125), new Point(375, 375)};
+    public static Point[] tester2 = { new Point(375, 375), new Point(375, 125), new Point(250, 125), new Point(250, 375), new Point(0, 375), new Point(0, 0)};
+    public static Point[] tester3 = { new Point(0, 375), new Point(0, 125), new Point(125, 125), new Point(125, 375), new Point(250, 375), new Point(250, 125)};
+    public static Point[] tester4 = { new Point(250, 125), new Point(250, 375), new Point(125, 375), new Point(125, 125), new Point(0, 125), new Point(0, 375)};
+    public static Point[] tester5 = { new Point(0, 375), new Point(0, 125), new Point(125, 125), new Point(125, 0), new Point(250, 0)};
+    public static Point[] tester6 = { new Point(250, 0), new Point(125, 0), new Point(125, 125), new Point(0, 125), new Point(0, 375)};
 
 
     /*
@@ -225,7 +225,7 @@ public class coordinateTranslate : MonoBehaviour
                 }
             }
         }
-        //if this is the last forward movement needed, then end the directions
+        //if this is the last forward movement neede, then end the directions
         if (path_accumulator == coordinates.Count)
         {
             Debug.Log("You have reached your destination!");

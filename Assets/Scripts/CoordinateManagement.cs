@@ -166,6 +166,24 @@ public class ManageCoordinates : MonoBehaviour
         }
     }
 
+    void markPolygon(Point[] points, int value) {
+
+        //For each set of two points
+        for(int i = 0; i < points.Length - 2; i++) {
+            Point firstPoint = points[i];
+            Point secondPoint = points[i + 1];
+
+
+            // Mark a line (using the Bresenham's line algorithm https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm) between the two points
+            for(int y = firstPoint.Y; y <  secondPoint.Y; y++) {
+                for(int x = firstPoint.X; x < secondPoint.X; x++) {
+                    x = (y - firstPoint.Y) * (secondPoint.X - firstPoint.X) / (secondPoint.Y - firstPoint.Y) + firstPoint.X;
+                    coordinateMap[y,x] = value;
+                }
+            }
+        }
+    }
+
     /// <summary>
     /// Mark room's walls and inner sections in map
     /// </summary>
