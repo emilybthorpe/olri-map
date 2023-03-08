@@ -39,6 +39,21 @@
             "Number": 144,
             "shape": "rect", 
             "coords": [529,172,464,218]
+        },
+        {
+            "Number": 11,
+            "shape": "rect",
+            "coords": [361,131,324,156]
+        },
+        {
+            "Number": 21,
+            "shape": "rect",
+            "coords": [361,131,324,156]
+        },
+        {
+            "Number": 31,
+            "shape": "rect",
+            "coords": [361,131,324,156]
         }
     ]
 }

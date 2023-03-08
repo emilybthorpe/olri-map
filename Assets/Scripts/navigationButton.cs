@@ -117,8 +117,6 @@ public class NavigateButton: MonoBehaviour
 
 
     void TaskOnClick(){
-         Debug.Log(manageCoordinates.GetRoomContainingPoint(510, 132).Number);
-        Debug.Log(manageCoordinates.GetRoomContainingPoint(546,134).Number);
         processStartEndRoom();
 		// Create the job
         var path = new NativeArray<char>(1659974, Allocator.TempJob);

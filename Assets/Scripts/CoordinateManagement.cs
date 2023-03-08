@@ -103,7 +103,7 @@ public class ManageCoordinates : MonoBehaviour
     /// <summary>
     /// Returns true if given point is inside any room
     /// </summary>
-    bool checkIfPointInRoom(int x, int y) {
+    bool CheckIfPointInRoom(int x, int y) {
         Debug.Log(coordinateMap[y,x]);
         return coordinateMap[y, x] == 0;
     }
@@ -122,21 +122,56 @@ public class ManageCoordinates : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Get's floor from room number
+    /// </summary>
+    public static int GetFloor(int number) {
+        // Floor number is always the first digit of the room number
+        return (int)(number.ToString()[0]) - 48;
+    }
+
+    public static int GetFloor(RoomInfo room) {
+        return GetFloor(room.Number);
+    }
+
+    
+    /// <summary>
+    /// Get rooms center point
+    /// </summary>
+    public Point GetCenterPointOfRoom(int number) {
+        RoomInfo room = GetRoomFromNumber(number);
+        return new Point(room.coords[2] - room.coords[0], room.coords[3] - room.coords[1]);
+    }
+
+    public static Point GetCenterPointOfRoom(RoomInfo room) {
+        return new Point(room.coords[2] - room.coords[0], room.coords[3] - room.coords[1]);
+    }
+
+    public RoomInfo GetFloorStaircase(int floorNumber) {
+        foreach (RoomInfo room in rooms.rooms)
+        {
+            if(GetFloor(room) == floorNumber && room.Number.ToString().Length == 2) {
+                return room;
+            }
+        }
+        return null;
+    }
+
 
     /// <summary>
     /// Returns a Room containing the inputed point (represented as x,y coordinates)
     /// If no such room exists, or the point is outside the building, returns null
     /// </summary>
-    public RoomInfo GetRoomContainingPoint(int x, int y) {
+    public RoomInfo GetRoomContainingPoint(Point point) {
 
-        if (!checkIfPointInRoom(x, y)) {
+        if (!CheckIfPointInRoom(point.X, point.Y)) {
             
             return null;
         }
 
         foreach (RoomInfo room in rooms.rooms)
         {
-            if(x > room.coords[0] && x < room.coords[2] && y > room.coords[1] && y < room.coords[3]) {
+            if(point.X > room.coords[0] && point.X < room.coords[2] && point.Y > room.coords[1] && point.Y < room.coords[3]) {
                 return room;
             }
         }

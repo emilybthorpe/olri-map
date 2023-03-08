@@ -51,6 +51,61 @@ public class Navigation
         File.AppendAllText(logPath, "/n/n" + mapString);
     }
 
+    /**
+    1. Check if need to go through multiple floors (if start position and end position have different floor )
+    2. If not, do regular navigate
+    3. If so, check the difference in floors 
+    4. Navigate go from start to starcase, up number of floors as difference (ie, if one difference ,go up stairs once), then from staircase to destination
+    5. get route as combination of n number of navigations combined
+    
+    */
+
+    public static (List<string>, List<Point>) MultiFloorNavigation(ManageCoordinates coordinateManager, Point startPoint, Point endPoint, int[,] map)
+    {
+        RoomInfo startRoom = coordinateManager.GetRoomContainingPoint(startPoint);
+        RoomInfo endRoom = coordinateManager.GetRoomContainingPoint(endPoint);
+        int startFloor = ManageCoordinates.GetFloor(startRoom);
+        int endFloor = ManageCoordinates.GetFloor(endRoom);
+        List<string> floorMaps = new List<string>();
+        //Check if multi-floor navigation
+        if (startFloor == endFloor ) 
+        {  
+            (string singleFloorMap, List<Point> singleFloorReute) =  navigate(startPoint, endPoint, map);
+            return (new List<string>{singleFloorMap}, singleFloorReute);
+        }
+
+        int floorDifference = Mathf.Abs(endFloor - startFloor);
+
+        List<Point> completeRoute = new List<Point>();
+        
+        
+        Point stairLocation = ManageCoordinates.GetCenterPointOfRoom(coordinateManager.GetFloorStaircase(endFloor));
+
+        (string startMap, List<Point> startRoute) = navigate(startPoint, endPoint, map);
+        floorMaps.Add(startMap);
+        completeRoute.AddRange(startRoute);
+
+
+        for(int i = 0; i < floorDifference; i++) {
+            (string thisMap, List<Point> thisRoute) = navigate(stairLocation, stairLocation, map);
+            completeRoute.AddRange(thisRoute);
+            floorMaps.Add(thisMap);
+        }
+
+        (string endMap, List<Point> endRoute) = navigate(stairLocation, endPoint, map);
+        floorMaps.Add(endMap);
+        completeRoute.AddRange(endRoute);
+        
+
+
+        return (floorMaps, endRoute);
+    }
+
+    public static (string, List<Point>) navigate(Point start, Point end, int[,] map) {
+        return navigate(start.X, start.Y, end.X, end.Y, map);
+    }
+
+
     public static (string, List<Point>) navigate(int startX, int startY, int endX, int endY, int [,] map)
     {
         var start = new Tile();
