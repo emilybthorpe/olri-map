@@ -78,7 +78,7 @@ public class DropDownSearch: MonoBehaviour
         {
             Debug.Log("Number: " + room.Number);
             if(RoomNumberIsValid(room.Number)) {
-                roomNames.Add(room.Number.ToString());
+                roomNames.Add(room.Number);
             }
         }
         return roomNames;
@@ -88,7 +88,7 @@ public class DropDownSearch: MonoBehaviour
     /// Check if a room number is valid (ie, having exactly 3 digits)
     /// 4 digit room numbers are used to represent doorways/entrances, which should not be considered
     /// </summary>
-    bool RoomNumberIsValid(int number) {
-        return number.ToString().Length == 3;
+    bool RoomNumberIsValid(string number) {
+        return number.Length == 3;
     }
 }

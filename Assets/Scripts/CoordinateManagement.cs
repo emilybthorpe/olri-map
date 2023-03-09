@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -23,7 +24,7 @@ public class ManageCoordinates : MonoBehaviour
 
     public bool finishedSettingUpMap = false;
 
-    private Dictionary<int, RoomInfo> roomNumbers;
+    private Dictionary<string, RoomInfo> roomNumbers;
 
 
     void Start()
@@ -33,7 +34,7 @@ public class ManageCoordinates : MonoBehaviour
         hallwaysJSON = Resources.Load<TextAsset>("hallways");
         roomsJSON = Resources.Load<TextAsset>("rooms");
         coordinateMap = new int[750, 750];
-        roomNumbers = new Dictionary<int, RoomInfo>();
+        roomNumbers = new Dictionary<string, RoomInfo>();
 
         hallways = JsonUtility.FromJson<Hallways>(hallwaysJSON.text);
 
@@ -108,12 +109,12 @@ public class ManageCoordinates : MonoBehaviour
         return coordinateMap[y, x] == 0;
     }
 
-    public RoomInfo GetRoomFromNumber(int number) {
+    public RoomInfo GetRoomFromNumber(string number) {
         // verify room number is valid
         Debug.Log(number);
         try
         {
-            return roomNumbers[number];
+            return roomNumbers[number.Substring(0,3)];
         }
         catch (System.Exception)
         {
@@ -125,9 +126,9 @@ public class ManageCoordinates : MonoBehaviour
     /// <summary>
     /// Get's floor from room number
     /// </summary>
-    public static int GetFloor(int number) {
+    public static int GetFloor(string number) {
         // Floor number is always the first digit of the room number
-        return (int)(number.ToString()[0]) - 48;
+        return number[0] - 48;
     }
 
     public static int GetFloor(RoomInfo room) {
@@ -138,7 +139,7 @@ public class ManageCoordinates : MonoBehaviour
     /// <summary>
     /// Get rooms center point
     /// </summary>
-    public Point GetCenterPointOfRoom(int number) {
+    public Point GetCenterPointOfRoom(string number) {
         RoomInfo room = GetRoomFromNumber(number);
         return new Point(room.coords[2] - room.coords[0], room.coords[3] - room.coords[1]);
     }
@@ -150,7 +151,7 @@ public class ManageCoordinates : MonoBehaviour
     public RoomInfo GetFloorStaircase(int floorNumber) {
         foreach (RoomInfo room in rooms.rooms)
         {
-            if(GetFloor(room) == floorNumber && room.Number.ToString().Length == 2) {
+            if(GetFloor(room) == floorNumber && room.Number.Length == 2) {
                 return room;
             }
         }
@@ -239,7 +240,7 @@ public class ManageCoordinates : MonoBehaviour
             markCoordinatesWithValue(coordinates, 0 /*o, inside room*/, 1 /*start outside wall*/);
 
             // If this is not a valid room number, continue
-            if(room.Number.ToString().Length != 3) {
+            if(room.Number.ToString().Length < 3) {
                 Debug.Log("Not a real room");
                 continue;
             }
