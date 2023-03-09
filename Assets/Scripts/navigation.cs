@@ -98,7 +98,7 @@ public class Navigation
         
 
 
-        return (floorMaps, endRoute);
+        return (floorMaps, completeRoute);
     }
 
     public static (string, List<Point>) navigate(Point start, Point end, int[,] map) {
