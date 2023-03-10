@@ -262,9 +262,11 @@ public class ManageCoordinates : MonoBehaviour
 
     private void markCoordinatesWithValue(int[] coordinates, int value, int modifier=0)
     {
-        for (int x = coordinates[0] + modifier; x < coordinates[2]; x++)
+        int minX, maxX, minY, maxY;
+        GetMinMaxXY(coordinates, out minX, out maxX, out minY, out maxY);
+        for (int x = minX + modifier; x < maxX; x++)
         {
-            for (int y = coordinates[1] + modifier; y < coordinates[3]; y++)
+            for (int y = minY + modifier; y < maxY; y++)
             {
                 coordinateMap[y, x] = value;
             }
@@ -415,25 +417,35 @@ public class ManageCoordinates : MonoBehaviour
     /// Mark rectangle room, both inside (0) and wall (1)
     /// </summary>
     private void MarkRectRoom(int[] coordinates)
-    {    
-        //Mark outer walls if 3 digit room
+    {
+        int minX, maxX, minY, maxY;
+        GetMinMaxXY(coordinates, out minX, out maxX, out minY, out maxY);
         //Starting from x1 to x2
-        for (int i = coordinates[0]; i <= coordinates[2]; i++)
+        for (int i = minX; i <= maxX; i++)
         {
             //mark current x, y1
-            coordinateMap[coordinates[1], i] = 1;
+            coordinateMap[minY, i] = 1;
             //mark current x, y2
-            coordinateMap[coordinates[3], i] = 1;
+            coordinateMap[maxY, i] = 1;
         }
         //starting from y1 to x2
-        for (int i = coordinates[1]; i <= coordinates[3]; i++)
+        for (int i = minY; i <= maxY; i++)
         {
-            coordinateMap[i, coordinates[0]] = 1;
-            coordinateMap[i, coordinates[2]] = 1;
+            coordinateMap[i, minX] = 1;
+            coordinateMap[i, maxX] = 1;
         }
 
         // Mark inside room
         markCoordinatesWithValue(coordinates, 0 /*o, inside room*/, 1 /*start outside wall*/);
+    }
+
+    private static void GetMinMaxXY(int[] coordinates, out int minX, out int maxX, out int minY, out int maxY)
+    {
+        // Get min and max X,Y values (because the image-map is inconsistantly marked left-to-right or right-to-left)
+        minX = Math.Min(coordinates[0], coordinates[2]);
+        maxX = Math.Max(coordinates[0], coordinates[2]);
+        minY = Math.Min(coordinates[1], coordinates[3]);
+        maxY = Math.Max(coordinates[1], coordinates[3]);
     }
 
     /// <summary>
