@@ -51,15 +51,11 @@ public class Navigation
         File.AppendAllText(logPath, "/n/n" + mapString);
     }
 
-    /**
-    1. Check if need to go through multiple floors (if start position and end position have different floor )
-    2. If not, do regular navigate
-    3. If so, check the difference in floors 
-    4. Navigate go from start to starcase, up number of floors as difference (ie, if one difference ,go up stairs once), then from staircase to destination
-    5. get route as combination of n number of navigations combined
-    
-    */
 
+    /// <summary>
+    /// Navigates between multiple floors
+    /// Returns a tuple of (floorMapsList, complete multi-floor route list)
+    /// </sumary>
     public static (List<string>, List<Point>) MultiFloorNavigation(ManageCoordinates coordinateManager, Point startPoint, Point endPoint, int[,] map)
     {
         RoomInfo startRoom = coordinateManager.GetRoomContainingPoint(startPoint);
@@ -83,22 +79,35 @@ public class Navigation
 
         (string startMap, List<Point> startRoute) = navigate(startPoint, endPoint, map);
         floorMaps.Add(startMap);
+        startRoute = SetZValueOnPoints(startRoute, startFloor);
         completeRoute.AddRange(startRoute);
 
 
         for(int i = 0; i < floorDifference; i++) {
             (string thisMap, List<Point> thisRoute) = navigate(stairLocation, stairLocation, map);
+            thisRoute = SetZValueOnPoints(thisRoute, i);
             completeRoute.AddRange(thisRoute);
             floorMaps.Add(thisMap);
         }
 
         (string endMap, List<Point> endRoute) = navigate(stairLocation, endPoint, map);
+        endRoute = SetZValueOnPoints(endRoute, endFloor);
         floorMaps.Add(endMap);
         completeRoute.AddRange(endRoute);
         
 
 
         return (floorMaps, completeRoute);
+    }
+
+
+    public static List<Point> SetZValueOnPoints(List<Point> points, int value) {
+        List<Point> modifiedPoints = new List<Point>();
+        foreach (Point point in points)
+        {
+            modifiedPoints.Add(new Point(point.X, point.Y, value));
+        }
+        return modifiedPoints;
     }
 
     public static (string, List<Point>) navigate(Point start, Point end, int[,] map) {
