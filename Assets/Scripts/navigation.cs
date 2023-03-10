@@ -79,7 +79,7 @@ public class Navigation
         List<Point> completeRoute = new List<Point>();
         
         
-        Point stairLocation = ManageCoordinates.GetCenterPointOfRoom(coordinateManager.GetFloorStaircase(endFloor));
+        Point stairLocation = ManageCoordinates.GetCenterPointOfStair(coordinateManager.GetNearestStairEucledian(startPoint));
 
         (string startMap, List<Point> startRoute) = navigate(startPoint, endPoint, map);
         floorMaps.Add(startMap);

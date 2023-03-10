@@ -158,7 +158,7 @@ public class ManageCoordinates : MonoBehaviour
                 closestStair = stair;
             }
         }
-        return closestStair();
+        return closestStair;
     }
 
     public RoomInfo GetRoomFromNumber(string number) {
