@@ -202,64 +202,177 @@ public class ManageCoordinates : MonoBehaviour
         }
     }
 
-    void markPolygon(Point[] points, int value) {
+    /// <summary>
+    /// Mark polygonal room, first the outer wall, then the inside 
+    /// </summary>
+    private void MarkPolygonRoom(Point[] points)
+    {
+        //First, mark outer walls
+        MarkOuterLinesOfPolygon(points);
 
-        //For each set of two points
-        for(int i = 0; i < points.Length - 2; i++) {
+        //Then, mark inside room
+        MarkPointsInPolygon(points);
+
+    }
+
+    /// <summary>
+    /// Marks outer walls of polygonal room (ie, room that is not a rectangle)
+    /// </summary>
+    private void MarkOuterLinesOfPolygon(Point[] points)
+    {
+        for (int i = 0; i < points.Length - 2; i++)
+        {
             Point firstPoint = points[i];
             Point secondPoint = points[i + 1];
 
 
             // Mark a line (using the Bresenham's line algorithm https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm) between the two points
-            for(int y = firstPoint.Y; y <  secondPoint.Y; y++) {
-                for(int x = firstPoint.X; x < secondPoint.X; x++) {
+            for (int y = firstPoint.Y; y < secondPoint.Y; y++)
+            {
+                for (int x = firstPoint.X; x < secondPoint.X; x++)
+                {
                     x = (y - firstPoint.Y) * (secondPoint.X - firstPoint.X) / (secondPoint.Y - firstPoint.Y) + firstPoint.X;
-                    coordinateMap[y,x] = value;
+                    coordinateMap[y, x] = 1;
                 }
             }
         }
     }
 
     /// <summary>
+    /// Mark points in pologyon, adapted from example code here: https://www.codeproject.com/Questions/221022/Get-all-Points-within-a-Polygon-in-Csharp
+    // </summary>
+    private void MarkPointsInPolygon(Point[] points)
+    {
+        if (points.Length == 0)
+            return;
+        int highestx = points[0].X;
+        int highesty = points[0].Y;
+        int lowestx = points[0].X;
+        int lowesty = points[0].Y;
+        for (int i = 0; i < points.Length; i++)
+        {
+            if (points[i].X > highestx)
+                highestx = points[i].X;
+            if (points[i].Y > highesty)
+                highesty = points[i].Y;
+            if (points[i].X < lowestx)
+                lowestx = points[i].X;
+            if (points[i].Y < lowesty)
+                lowesty = points[i].Y;
+        }
+        for (int x = lowestx; x < highestx; x++)
+        {
+            for (int y = lowesty; y < highesty; y++)
+            {
+                if (IsPointInPolygon(points, new Point(x,y)))
+                {
+                    coordinateMap[y, x] = 0;
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Determines if the given point is inside the polygon
+    /// From https://stackoverflow.com/a/14998816
+    /// </summary>
+    /// <param name="polygon">the vertices of polygon</param>
+    /// <param name="testPoint">the given point</param>
+    /// <returns>true if the point is inside the polygon; otherwise, false</returns>
+    private bool IsPointInPolygon(Point[] polygon, Point testPoint)
+    {
+        bool result = false;
+        int j = polygon.Count() - 1;
+        for (int i = 0; i < polygon.Count(); i++)
+        {
+            if (polygon[i].Y < testPoint.Y && polygon[j].Y >= testPoint.Y || polygon[j].Y < testPoint.Y && polygon[i].Y >= testPoint.Y)
+            {
+                if (polygon[i].X + (testPoint.Y - polygon[i].Y) / (polygon[j].Y - polygon[i].Y) * (polygon[j].X - polygon[i].X) < testPoint.X)
+                {
+                    result = !result;
+                }
+            }
+            j = i;
+        }
+        return result;
+    }
+    
+    /// <summary>
+    /// Takes a arary of integer points (ie: [x1, y1, x2, y2, ........ xN, yN])
+    /// And converts to a List of <c>Point</c>s (ie: {Point(x1,y1),Point(x2,y2).....Point(xN,yN)})
+    /// </summary>
+    Point[] ConvertCoordinateIntegerArrayToPointArray(int[] pointsArray)
+    {
+        Point[] points = new Point[pointsArray.Length]
+        for(int i = 0; i < pointsArray.Length - 1; i +=2) {
+            points[i] = (new Point(pointsArray[i], pointsArray[i+1]));
+        }
+        return points;
+    }
+
+    /// <summary>
     /// Mark room's walls and inner sections in map
     /// </summary>
     void establishRooms() {
-        foreach (RoomInfo room in rooms.rooms) 
+        foreach (RoomInfo room in rooms.rooms)
         {
             int[] coordinates = room.coords;
             roomNumbers.Add(room.Number, room);
 
             // For now, if a room's shape is not a rectangle, leave it be
             // TODO: implement other room shapes 
-            if(!room.shape.Equals("rect")) {
+            if (!room.shape.Equals("rect"))
+            {
                 Debug.Log("Not rect!");
                 continue;
             }
 
-            // Mark inside room
-            markCoordinatesWithValue(coordinates, 0 /*o, inside room*/, 1 /*start outside wall*/);
-
             // If this is not a valid room number, continue
-            if(room.Number.ToString().Length < 3) {
+            if (room.Number.ToString().Length < 3)
+            {
                 Debug.Log("Not a real room");
                 continue;
             }
 
-            //Mark outer walls if 3 digit room
-            //Starting from x1 to x2
-            for(int i = coordinates[0]; i <= coordinates[2]; i++) {
-                //mark current x, y1
-                coordinateMap[coordinates[1], i] = 1;
-                //mark current x, y2
-                coordinateMap[coordinates[3], i] = 1;
-            }
-            //starting from y1 to x2
-            for (int i = coordinates[1]; i <= coordinates[3]; i++)
+            switch (room.shape)
             {
-                coordinateMap[i, coordinates[0]] = 1;
-                coordinateMap[i, coordinates[2]] = 1;
+                case "rect": 
+                    MarkRectRoom(room.coords);
+                    break;
+                case "polygon":
+                    MarkPolygonRoom(ConvertCoordinateIntegerArrayToPointArray(room.coords));
+                    break;
+                default:
+                    Debug.Log("Not a room!");
+                    continue;
             }
+
         }
+    }
+
+    /// <summary>
+    /// Mark rectangle room, both inside (0) and wall (1)
+    /// </summary>
+    private void MarkRectRoom(int[] coordinates)
+    {    
+        //Mark outer walls if 3 digit room
+        //Starting from x1 to x2
+        for (int i = coordinates[0]; i <= coordinates[2]; i++)
+        {
+            //mark current x, y1
+            coordinateMap[coordinates[1], i] = 1;
+            //mark current x, y2
+            coordinateMap[coordinates[3], i] = 1;
+        }
+        //starting from y1 to x2
+        for (int i = coordinates[1]; i <= coordinates[3]; i++)
+        {
+            coordinateMap[i, coordinates[0]] = 1;
+            coordinateMap[i, coordinates[2]] = 1;
+        }
+
+        // Mark inside room
+        markCoordinatesWithValue(coordinates, 0 /*o, inside room*/, 1 /*start outside wall*/);
     }
 
     /// <summary>
