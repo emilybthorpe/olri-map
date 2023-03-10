@@ -16,9 +16,12 @@ public class ManageCoordinates : MonoBehaviour
  
     TextAsset roomsJSON;
     TextAsset hallwaysJSON;
+    TextAsset stairsJSON;
 
     Rooms rooms;
     Hallways hallways;
+
+    Stairs stairs;
 
     private string logPath;
 
@@ -32,6 +35,7 @@ public class ManageCoordinates : MonoBehaviour
         setupLogOfMap();
 
         hallwaysJSON = Resources.Load<TextAsset>("hallways");
+        stairsJSON = Resources.Load<TextAsset>("stairs");
         roomsJSON = Resources.Load<TextAsset>("rooms");
         coordinateMap = new int[750, 750];
         roomNumbers = new Dictionary<string, RoomInfo>();
@@ -39,6 +43,9 @@ public class ManageCoordinates : MonoBehaviour
         hallways = JsonUtility.FromJson<Hallways>(hallwaysJSON.text);
 
         rooms = JsonUtility.FromJson<Rooms>(roomsJSON.text);
+        stairs = JsonUtility.FromJson<Stairs>(stairsJSON.text);
+
+
 
         // Start my marking the entire map as outside, before marking the speicifcs of the building
         markAllMapAsOutside();
@@ -303,7 +310,7 @@ public class ManageCoordinates : MonoBehaviour
     /// </summary>
     Point[] ConvertCoordinateIntegerArrayToPointArray(int[] pointsArray)
     {
-        Point[] points = new Point[pointsArray.Length]
+        Point[] points = new Point[pointsArray.Length];
         for(int i = 0; i < pointsArray.Length - 1; i +=2) {
             points[i] = (new Point(pointsArray[i], pointsArray[i+1]));
         }
@@ -319,16 +326,8 @@ public class ManageCoordinates : MonoBehaviour
             int[] coordinates = room.coords;
             roomNumbers.Add(room.Number, room);
 
-            // For now, if a room's shape is not a rectangle, leave it be
-            // TODO: implement other room shapes 
-            if (!room.shape.Equals("rect"))
-            {
-                Debug.Log("Not rect!");
-                continue;
-            }
-
-            // If this is not a valid room number, continue
-            if (room.Number.ToString().Length < 3)
+                        // If this is not a valid room number, go to next room
+            if (room.Number.ToString().Length != 3)
             {
                 Debug.Log("Not a real room");
                 continue;

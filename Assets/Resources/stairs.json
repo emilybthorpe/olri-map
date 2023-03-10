@@ -1,0 +1,14 @@
+{
+    "stairs" :  [
+        {
+            "number": "Stair1",
+            "type": "staircase",
+            "coords": [361,131,324,156]
+        },
+        {
+            "number": "Elevator1",   
+            "shape" :"rect",   
+            "coords" :[427,156,405,133]
+        }
+    ]
+}

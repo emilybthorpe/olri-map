@@ -26,7 +26,7 @@ public class Navigation
     /// <Summary>
     /// Generates start end location from center of first room to center of second room
     /// </Summary>
-    public static StartEndLocation GetStartEndLocationFromRoomNumbers(ManageCoordinates coordinateManager, int room1, int room2) 
+    public static StartEndLocation GetStartEndLocationFromRoomNumbers(ManageCoordinates coordinateManager, string room1, string room2) 
     {    
         RoomInfo firstRoom = coordinateManager.GetRoomFromNumber(room1);
         RoomInfo secondRoom = coordinateManager.GetRoomFromNumber(room2);

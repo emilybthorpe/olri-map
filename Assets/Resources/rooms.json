@@ -40,21 +40,6 @@
             "shape": "rect", 
             "coords": [529,172,464,218]
         },
-        {
-            "Number": 11,
-            "shape": "rect",
-            "coords": [361,131,324,156]
-        },
-        {
-            "Number": 21,
-            "shape": "rect",
-            "coords": [361,131,324,156]
-        },
-        {
-            "Number": 31,
-            "shape": "rect",
-            "coords": [361,131,324,156]
-        },
         {"Number": "150" ,  "shape" :"rect", "coords" :[528,169,595,220]},
         {"Number": "146" ,  "shape" :"rect", "coords" :[620,189,596,220]},
         {"Number": "146A",  "shape" :"rect", "coords" :[621,171,596,189] },
@@ -121,7 +106,6 @@
         {"Number": "181",  "shape" :"rect",  "coords" :[72,19,143,158] },
         {"Number": "12" ,  "shape" :"rect",  "coords" :[428,298,596,283] },
         {"Number": "104",  "shape" :"rect",  "coords" :[632,278,628,307] },
-        {"Number": "Elevator",   "shape" :"rect",   "coords" :[427,156,405,133]},
         {"Number": "171",   "shape" :"poly",  "coords" :[223,208,172,208,169,254,205,252,208,232,207,219,223,219]},
         {"Number": "161A",  "shape" :"poly" , "coords" :[165,338,128,338,129,300,143,300,144,309,164,308] },
         {"Number": "DOCK",   "shape" :"poly" ,"coords" :[23,354,197,356,197,339,128,338,129,284,34,282,34,308,24,308]}

@@ -43,11 +43,7 @@ public class NavigateButton: MonoBehaviour
     }
 
     void processStartEndRoom() {
-        // Make sure the room numbers are in fact numbers
-        int startRoomNumber = int.Parse(startRoom);
-        int endRoomNumber = int.Parse(endRoom);
-        
-        startEndLocation = Navigation.GetStartEndLocationFromRoomNumbers(manageCoordinates, startRoomNumber,endRoomNumber);
+        startEndLocation = Navigation.GetStartEndLocationFromRoomNumbers(manageCoordinates, startRoom.Substring(0,3),endRoom.Substring(0,3));
     }
 
     void setRooms(string startRoom, string endRoom) {
