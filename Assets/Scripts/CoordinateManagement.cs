@@ -55,6 +55,7 @@ public class ManageCoordinates : MonoBehaviour
         establishRooms();
         establishHallways();
         
+        establishStairs();
 
         createLogOfMap();
         
@@ -116,6 +117,50 @@ public class ManageCoordinates : MonoBehaviour
         return coordinateMap[y, x] == 0;
     }
 
+
+    /// <Summary>
+    /// Uses eucledian distance formal to find nearest stair from point. Very fast, but can be very inaccurate
+    /// </summary>
+    public Stair GetNearestStairEucledian(Point startPoint) {
+        double nearestDistance = double.MaxValue;
+        Stair closestStair = null; 
+        foreach (Stair stair in stairs.stairs)
+        {
+            Point centerPoint = GetCenterPointOfStair(stair);
+            double distance = Math.Sqrt(Math.Pow((centerPoint.X - startPoint.X), 2) + Math.Pow((centerPoint.Y - startPoint.Y), 2));
+            if (distance < nearestDistance ) {
+                nearestDistance = distance;
+                closestStair = stair;
+            }
+        }
+        return closestStair;
+    }
+
+    /// <summary>
+    /// Uses A* to find true nearest stair to point. Very slow.
+    /// </summary>
+    public Stair GetNearestStairNavigation(Point startPoint) {
+        double nearestDistance = double.MaxValue;
+        Stair closestStair = null; 
+        foreach (Stair stair in stairs.stairs)
+        {
+            Point centerPoint = GetCenterPointOfStair(stair);
+            List<Point> thisRoute = Navigation.navigate(startPoint, centerPoint, coordinateMap).Item2;
+            double totalDistance = 0;
+            for(int i = 0; i < thisRoute.Count() - 1; i += 2)
+            {
+                double thisDistance = Math.Sqrt(Math.Pow((thisRoute[i + 1].X - thisRoute[i].X), 2) + Math.Pow((thisRoute[i+1].Y - thisRoute[i].Y), 2));
+                totalDistance += thisDistance;
+            }
+
+            if (totalDistance < nearestDistance ) {
+                nearestDistance = totalDistance;
+                closestStair = stair;
+            }
+        }
+        return closestStair();
+    }
+
     public RoomInfo GetRoomFromNumber(string number) {
         // verify room number is valid
         Debug.Log(number);
@@ -155,6 +200,10 @@ public class ManageCoordinates : MonoBehaviour
         return new Point(room.coords[2] - room.coords[0], room.coords[3] - room.coords[1]);
     }
 
+    public static Point GetCenterPointOfStair(Stair stair) {
+        return new Point(stair.coords[2] - stair.coords[0], stair.coords[3] - stair.coords[1]);
+    }
+
     public RoomInfo GetFloorStaircase(int floorNumber) {
         foreach (RoomInfo room in rooms.rooms)
         {
@@ -186,6 +235,19 @@ public class ManageCoordinates : MonoBehaviour
 
         return null;
     }
+
+
+    /// <summary>
+    /// mark stairs (staircases and elevators)
+    /// </summary> 
+    void establishStairs() {
+        foreach (Stair stair in stairs.stairs)
+        {
+            int[] coordinates = stair.coords;
+            markCoordinatesWithValue(coordinates, 2);
+        }
+    }
+
 
     /// <summary>
     /// mark hallway locations in map
