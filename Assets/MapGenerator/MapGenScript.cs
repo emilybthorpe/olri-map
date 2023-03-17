@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+
 public class MapGenScript : MonoBehaviour {
 
     public Transform trans;
@@ -22,13 +22,11 @@ public class MapGenScript : MonoBehaviour {
 	public GameObject[] prefabCollumn;
     public GameObject[] prefabCeiling;
     public Texture2D Map;
-	public Image img;
+
     private int width;
     private int height;
 
-    void Start(){
-		Texture2D Map = ((Texture2D) img.sprite.texture);
-	}
+    
     public void PressButon() {
 		if(!ClusterMode)
 			GenerateMap();
