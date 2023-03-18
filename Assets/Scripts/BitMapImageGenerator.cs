@@ -9,25 +9,28 @@ public class BitMapImageGenerator : MonoBehaviour
     public Image bitmapImage;
 
     void Start () {
-        matrix = GenerateMatrix();
-        GenerateBitmap();
-        bitmapImage.sprite = Sprite.Create(bitmapTexture, new Rect(0, 0, bitmapTexture.width, bitmapTexture.height), new Vector2(0.5f, 0.5f));
+        // matrix = GenerateMatrix();
+        // GenerateBitmap();
+        // bitmapImage.sprite = Sprite.Create(bitmapTexture, new Rect(0, 0, bitmapTexture.width, bitmapTexture.height), new Vector2(0.5f, 0.5f));
     }
 
-    public int[,] GenerateMatrix()
-    {
-        int[,] matrix = new int[10, 10];
+    // public int[,] GenerateMatrix()
+    // {
 
-        for (int i = 0; i < 10; i++)
-        {
-            for (int j = 0; j < 10; j++)
-            {
-                matrix[i, j] = Random.Range(0, 4);
-            }
-        }
+    //     //read the matrix given by the backend
 
-        return matrix;
-    }
+    //     //get the matrix from backend 
+    //     //matrix  = getMatrix() 
+
+
+    //     //process it for bitmap generation 
+
+    //     //processArray(matrix )
+
+    //     //return the matrix 
+
+
+    // }
 
     public void processArray(int[,] room){
 
@@ -50,6 +53,7 @@ public class BitMapImageGenerator : MonoBehaviour
             }
         }
     }
+
     void GenerateBitmap () {
         int width = matrix.GetLength(0);
         int height = matrix.GetLength(1);
