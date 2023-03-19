@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.54080504, g: 0.750313, b: 0.8445656, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -104,7 +104,7 @@ NavMeshSettings:
   serializedVersion: 2
   m_ObjectHideFlags: 0
   m_BuildSettings:
-    serializedVersion: 2
+    serializedVersion: 3
     agentTypeID: 0
     agentRadius: 0.5
     agentHeight: 2
@@ -117,7 +117,7 @@ NavMeshSettings:
     cellSize: 0.16666667
     manualTileSize: 0
     tileSize: 256
-    accuratePlacement: 0
+    buildHeightMesh: 0
     maxJobWorkers: 0
     preserveTilesOutsideBounds: 0
     debug:
@@ -5624,6 +5624,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1968571676201028, guid: 8d28364fcf6521c4b91cb678dde14423, type: 3}
@@ -5695,6 +5696,9 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d28364fcf6521c4b91cb678dde14423, type: 3}
 --- !u!1 &96326019
 GameObject:
@@ -43059,6 +43063,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2ee48284db2c6ae6aed67fc89f1ae9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  navigateButton: {fileID: 757322598}
+  manageCoordinates: {fileID: 1411679559}
+  startRoom: 
+  endRoom: 
 --- !u!1 &740903703
 GameObject:
   m_ObjectHideFlags: 0
@@ -43992,6 +44000,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 1607892342}
     m_Modifications:
     - target: {fileID: 5499622844081799036, guid: 8eb62d6f64a2c0d418e8d612e6d1e79b, type: 3}
@@ -44115,12 +44124,26 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8eb62d6f64a2c0d418e8d612e6d1e79b, type: 3}
 --- !u!224 &757322597 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5499622844135788351, guid: 8eb62d6f64a2c0d418e8d612e6d1e79b, type: 3}
   m_PrefabInstance: {fileID: 757322596}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &757322598 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5499622844135788350, guid: 8eb62d6f64a2c0d418e8d612e6d1e79b, type: 3}
+  m_PrefabInstance: {fileID: 757322596}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &757552202
 GameObject:
   m_ObjectHideFlags: 0
@@ -59002,6 +59025,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 1607892342}
     m_Modifications:
     - target: {fileID: 5499622844081799036, guid: 8eb62d6f64a2c0d418e8d612e6d1e79b, type: 3}
@@ -59125,6 +59149,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5499622844135788344, guid: 8eb62d6f64a2c0d418e8d612e6d1e79b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1025169348}
   m_SourcePrefab: {fileID: 100100000, guid: 8eb62d6f64a2c0d418e8d612e6d1e79b, type: 3}
 --- !u!224 &1025169344 stripped
 RectTransform:
@@ -76234,9 +76264,17 @@ Camera:
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
+  m_Iso: 200
+  m_ShutterSpeed: 0.005
+  m_Aperture: 16
+  m_FocusDistance: 10
+  m_FocalLength: 50
+  m_BladeCount: 5
+  m_Curvature: {x: 2, y: 11}
+  m_BarrelClipping: 0.25
+  m_Anamorphism: 0
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -83800,6 +83838,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18ea6dff7e2e03ca7a9530d2026b6a4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  finishedSettingUpMap: 0
 --- !u!4 &1411679560
 Transform:
   m_ObjectHideFlags: 0
@@ -96764,6 +96803,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: -1094870259
   m_SortingOrder: 1
   m_TargetDisplay: 0
@@ -105432,6 +105472,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
