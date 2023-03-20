@@ -39,13 +39,11 @@ public class BitMapImageGenerator : MonoBehaviour
             for (int j = 1; j < room.GetLength(1) - 1; j++) {
                 
                 if (room[i, j] == 1) { // if current cell is a wall
-                    
                     int count = 0;
                     if (room[i - 1, j] == -1) count++; // top cell
                     if (room[i + 1, j] == -1) count++; // bottom cell
                     if (room[i, j - 1] == -1) count++; // left cell
                     if (room[i, j + 1] == -1) count++; // right cell
-                    
                     if (count >= 2) {
                         room[i, j] = 3; // set the wall edge to green
                     }

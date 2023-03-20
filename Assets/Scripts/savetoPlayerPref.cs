@@ -20,11 +20,10 @@ public class savetoPlayerPref : MonoBehaviour
     {
     }
     public void savePlayerPref(){
-        Debug.Log(currentLocationEntry.GetComponent<TMP_Text>().text);
-        Debug.Log(Int32.Parse(currentLocationEntry.GetComponent<TMP_Text>().text));
-        Debug.Log("____________");
-        PlayerPrefs.SetInt("currentLocation", 100);
-        PlayerPrefs.SetInt("destination", 102);
-        Debug.Log(PlayerPrefs.GetInt("destination"));
+       
+        PlayerPrefs.SetString("currentLocation", currentLocationEntry.GetComponent<TMP_Text>().text);
+        PlayerPrefs.SetString("destination", destinationEntry.GetComponent<TMP_Text>().text);
+        Debug.Log(PlayerPrefs.GetString("currentLocation"));
+        Debug.Log(PlayerPrefs.GetString("destination"));
     }
 }

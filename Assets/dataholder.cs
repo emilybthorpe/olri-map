@@ -10,6 +10,7 @@ public class dataHolder: MonoBehaviour {
 
     public string destination; 
     public string currentLocation; 
+
     
     private void Awake()
     {
