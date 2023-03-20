@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
-
+using UnityEngine.SceneManagement;
 public class savetoPlayerPref : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -25,5 +25,6 @@ public class savetoPlayerPref : MonoBehaviour
         PlayerPrefs.SetString("destination", destinationEntry.GetComponent<TMP_Text>().text);
         Debug.Log(PlayerPrefs.GetString("currentLocation"));
         Debug.Log(PlayerPrefs.GetString("destination"));
+        SceneManager.LoadScene("Navigation");
     }
 }
