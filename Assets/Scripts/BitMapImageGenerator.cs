@@ -14,6 +14,10 @@ public class BitMapImageGenerator : MonoBehaviour
         // bitmapImage.sprite = Sprite.Create(bitmapTexture, new Rect(0, 0, bitmapTexture.width, bitmapTexture.height), new Vector2(0.5f, 0.5f));
     }
 
+    public void SetMatrix(int[,] matrix) {
+        this.matrix = matrix;
+    }
+
     // public int[,] GenerateMatrix()
     // {
 
