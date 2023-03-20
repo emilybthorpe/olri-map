@@ -19,6 +19,8 @@ public class NavigateButton: MonoBehaviour
     public Button navigateButton;
 
     public ManageCoordinates manageCoordinates;
+
+    public BitMapImageGenerator imageGenerator;
     
 
     public StartEndLocation startEndLocation;
@@ -30,6 +32,7 @@ public class NavigateButton: MonoBehaviour
 
     void Start()
     {
+        imageGenerator = new BitMapImageGenerator();
         Button btn = navigateButton.GetComponent<Button>();
         //startEndLocation = new StartEndLocation(510, 132,546,134);
 
@@ -138,6 +141,8 @@ public class NavigateButton: MonoBehaviour
         path.Dispose();
         map.Dispose();
         Navigation.logMapToFile(result);
+        imageGenerator.SetMatrix(Make2DArray(path.ToArray(), manageCoordinates.coordinateMap.GetLength(0), manageCoordinates.coordinateMap.GetLength(1)));
+
 	}
 
 

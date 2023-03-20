@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class BitMapImageGenerator : MonoBehaviour
 {
     public Texture2D bitmapTexture;
-    public int[,] matrix = new int[10, 10]; // change size as needed
+    public char[,] matrix = new char[10, 10]; // change size as needed
     public Image bitmapImage;
 
     void Start () {
@@ -14,7 +14,7 @@ public class BitMapImageGenerator : MonoBehaviour
         // bitmapImage.sprite = Sprite.Create(bitmapTexture, new Rect(0, 0, bitmapTexture.width, bitmapTexture.height), new Vector2(0.5f, 0.5f));
     }
 
-    public void SetMatrix(int[,] matrix) {
+    public void SetMatrix(char[,] matrix) {
         this.matrix = matrix;
     }
 
