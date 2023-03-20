@@ -34,8 +34,7 @@ public class NavigateButton: MonoBehaviour
         //startEndLocation = new StartEndLocation(510, 132,546,134);
 
        
-        //For testing:
-        setRooms("143", "145");
+        setRooms(PlayerPrefs.GetString("currentLocation"), PlayerPrefs.GetString("destination"));
 
 
 
