@@ -11,8 +11,22 @@ public class BitMapImageGenerator : MonoBehaviour
     void Start () {
     }
 
-    public void SetMatrix(int[,] matrix) {
-        this.matrix = matrix;
+    private int[,] proccesMatrix(char[,] matrix) {
+        int[,] intArray = new int[matrix.GetLength(0), matrix.GetLength(1)];
+        for(int x = 0; x < matrix.GetLength(0); x++) {
+            for(int y = 0; y < matrix.GetLength(1); y++) {
+                if(matrix[y,x].Equals('*')) {
+                    intArray[y,x] = 3;
+                } else {
+                    intArray[y,x]= (int) char.GetNumericValue(matrix[y,x]);
+                }
+            }
+        }
+        return intArray;
+    }
+
+    public void SetMatrix(char[,] matrix) {
+        this.matrix = proccesMatrix(matrix);
     }
 
     public Texture2D Generate(){
