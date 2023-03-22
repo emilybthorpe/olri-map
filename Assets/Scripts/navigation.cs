@@ -10,7 +10,8 @@ using Unity.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-
+using System.Threading;
+using System;
 /**
 Adapted with modifications from https://dotnetcoretutorials.com/2020/07/25/a-search-pathfinding-algorithm-in-c/
 **/
@@ -56,41 +57,40 @@ public class Navigation
     /// Navigates between multiple floors
     /// Returns a tuple of (floorMapsList, complete multi-floor route list)
     /// </sumary>
-    public static (List<string>, List<Point>) MultiFloorNavigation(ManageCoordinates coordinateManager, Point startPoint, Point endPoint, int[,] map)
+    public static (List<int[,]>, List<Point>) MultiFloorNavigation(ManageCoordinates coordinateManager, Point startPoint, Point endPoint, int[,] map)
     {
         RoomInfo startRoom = coordinateManager.GetRoomContainingPoint(startPoint);
         RoomInfo endRoom = coordinateManager.GetRoomContainingPoint(endPoint);
         int startFloor = ManageCoordinates.GetFloor(startRoom);
         int endFloor = ManageCoordinates.GetFloor(endRoom);
-        List<string> floorMaps = new List<string>();
+        List<int[,]> floorMaps = new List<int[,]>();
         //Check if multi-floor navigation
         if (startFloor == endFloor ) 
         {  
-            (string singleFloorMap, List<Point> singleFloorReute) =  navigate(startPoint, endPoint, map);
-            return (new List<string>{singleFloorMap}, singleFloorReute);
+            (int[,] singleFloorMap, List<Point> singleFloorReute) =  navigate(startPoint, endPoint, map);
+            return (new List<int[,]>{singleFloorMap}, singleFloorReute);
         }
 
         int floorDifference = Mathf.Abs(endFloor - startFloor);
 
         List<Point> completeRoute = new List<Point>();
         
-        
         Point stairLocation = ManageCoordinates.GetCenterPointOfStair(coordinateManager.GetNearestStairEucledian(startPoint));
 
-        (string startMap, List<Point> startRoute) = navigate(startPoint, endPoint, map);
+        (int[,] startMap, List<Point> startRoute) = navigate(startPoint, endPoint, map);
         floorMaps.Add(startMap);
         startRoute = SetZValueOnPoints(startRoute, startFloor);
         completeRoute.AddRange(startRoute);
 
 
         for(int i = 0; i < floorDifference; i++) {
-            (string thisMap, List<Point> thisRoute) = navigate(stairLocation, stairLocation, map);
+            (int[,] thisMap, List<Point> thisRoute) = navigate(stairLocation, stairLocation, map);
             thisRoute = SetZValueOnPoints(thisRoute, i);
             completeRoute.AddRange(thisRoute);
             floorMaps.Add(thisMap);
         }
 
-        (string endMap, List<Point> endRoute) = navigate(stairLocation, endPoint, map);
+        (int[,] endMap, List<Point> endRoute) = navigate(stairLocation, endPoint, map);
         endRoute = SetZValueOnPoints(endRoute, endFloor);
         floorMaps.Add(endMap);
         completeRoute.AddRange(endRoute);
@@ -100,6 +100,24 @@ public class Navigation
         return (floorMaps, completeRoute);
     }
 
+    public static void TheadedNavigation(Point startPoint, Point endPoint, int[,] map, BitMapImageGenerator imageGenerator) {
+
+        ResultCallbackDelegate resultCallbackDelegate = new ResultCallbackDelegate(ResultCallBackMethod);
+
+        NavigateHelper obj = new NavigateHelper(startPoint,endPoint,map, imageGenerator, resultCallbackDelegate);
+
+        //Creating the Thread using ThreadStart delegate
+        Thread T1 = new Thread(new ThreadStart(obj.CalculatePath));
+        
+        T1.Start();
+    }
+
+    
+    public static void ResultCallBackMethod(int[,] path, List<Point> route, BitMapImageGenerator imageGenerator)
+    {
+        logMapToFile(generateStringBuilderOfMap(path).ToString());
+        imageGenerator.SetMatrix(path);
+    }
 
     public static List<Point> SetZValueOnPoints(List<Point> points, int value) {
         List<Point> modifiedPoints = new List<Point>();
@@ -110,20 +128,17 @@ public class Navigation
         return modifiedPoints;
     }
 
-    public static (string, List<Point>) navigate(Point start, Point end, int[,] map) {
-        return navigate(start.X, start.Y, end.X, end.Y, map);
-    }
 
 
-    public static (string, List<Point>) navigate(int startX, int startY, int endX, int endY, int [,] map)
+    public static (int[,], List<Point>) navigate(Point startPoint, Point endPoint, int[,] map)
     {
         var start = new Tile();
-        start.Y = startY;
-        start.X = startX;
+        start.Y = startPoint.X;
+        start.X = startPoint.Y;
 
         var finish = new Tile();
-        finish.Y = endY;
-        finish.X = endX;
+        finish.Y = endPoint.X;
+        finish.X = endPoint.Y;
 
         start.SetDistance(finish.X, finish.Y);
 
@@ -131,8 +146,8 @@ public class Navigation
         activeTiles.Add(start);
         var visitedTiles = new List<Tile>();
         
-        (string, List<Point>) path = getBestPath(finish, activeTiles, visitedTiles, map);
-        string stringPath = path.Item1;
+        (int[,], List<Point>) path = getBestPath(finish, activeTiles, visitedTiles, map);
+        string stringPath = generateStringBuilderOfMap(path.Item1).ToString();
         Debug.Log("Reached destination");
         logMapToFile(stringPath);
         return path;
@@ -145,7 +160,7 @@ public class Navigation
 
     
 
-    private static (string, List<Point>) getBestPath(Tile finish, List<Tile> activeTiles, List<Tile> visitedTiles, int [,] map)
+    private static (int[,], List<Point>) getBestPath(Tile finish, List<Tile> activeTiles, List<Tile> visitedTiles, int [,] map)
     {
         while (activeTiles.Any())
         {
@@ -153,7 +168,7 @@ public class Navigation
             Debug.Log(checkTile);
             if (checkTile.X == finish.X && checkTile.Y == finish.Y)
             {
-                string path = getPath(checkTile, map);
+                int[,] path = getArrayMap(checkTile, map);
                 List<Point> route = generateRouteFromMap(map);
                 return (path, route);
             }
@@ -215,7 +230,30 @@ public class Navigation
         return sb.ToString();
     }
 
-    private static StringBuilder generateStringBuilderOfMap(int[,] outMap)
+    /// <summary>
+    /// Generates a represenation of the coordinate map with the path marked
+    /// </summary> 
+    /// <param name="checkTile">final tile in path</param>
+    /// <param name="map"><c>int[,]</c> coordinate map to check</param>
+    private static int[,] getArrayMap(Tile checkTile, int[,] map)
+    {
+        StringBuilder sb = new StringBuilder(); 
+        var tile = checkTile;
+
+        int[,] mapWithPath = map;
+
+        while (tile != null) {
+            if (map[tile.Y, tile.X] == 0 || map[tile.Y, tile.X] == 2) //if traversable area
+            {
+                mapWithPath[tile.Y, tile.X] = 3; // mark as path 
+            }
+            tile = tile.Parent;
+        }
+
+        return mapWithPath;
+    }
+
+    public static StringBuilder generateStringBuilderOfMap(int[,] outMap)
     {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < outMap.GetLength(0); i++)

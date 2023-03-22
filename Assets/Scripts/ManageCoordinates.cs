@@ -136,31 +136,6 @@ public class ManageCoordinates : MonoBehaviour
         return closestStair;
     }
 
-    /// <summary>
-    /// Uses A* to find true nearest stair to point. Very slow.
-    /// </summary>
-    public Stair GetNearestStairNavigation(Point startPoint) {
-        double nearestDistance = double.MaxValue;
-        Stair closestStair = null; 
-        foreach (Stair stair in stairs.stairs)
-        {
-            Point centerPoint = GetCenterPointOfStair(stair);
-            List<Point> thisRoute = Navigation.navigate(startPoint, centerPoint, coordinateMap).Item2;
-            double totalDistance = 0;
-            for(int i = 0; i < thisRoute.Count() - 1; i += 2)
-            {
-                double thisDistance = Math.Sqrt(Math.Pow((thisRoute[i + 1].X - thisRoute[i].X), 2) + Math.Pow((thisRoute[i+1].Y - thisRoute[i].Y), 2));
-                totalDistance += thisDistance;
-            }
-
-            if (totalDistance < nearestDistance ) {
-                nearestDistance = totalDistance;
-                closestStair = stair;
-            }
-        }
-        return closestStair;
-    }
-
     public RoomInfo GetRoomFromNumber(string number) {
         // verify room number is valid
         Debug.Log(number);

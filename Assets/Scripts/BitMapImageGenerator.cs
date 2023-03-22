@@ -25,8 +25,8 @@ public class BitMapImageGenerator : MonoBehaviour
         return intArray;
     }
 
-    public void SetMatrix(char[,] matrix) {
-        this.matrix = proccesMatrix(matrix);
+    public void SetMatrix(int[,] matrix) {
+        this.matrix = matrix;
     }
 
     public Texture2D Generate(){

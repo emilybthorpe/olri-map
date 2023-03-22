@@ -28,6 +28,9 @@ public class NavigateButton: MonoBehaviour
     public string startRoom;
     public string endRoom;
 
+    private string Map;
+    private List<Point> route;
+
     
 
     void Start()
@@ -53,6 +56,11 @@ public class NavigateButton: MonoBehaviour
         this.endRoom = endRoom;
     }
 
+    void setPathRoute(string Map, List<Point> route) {
+        this.Map = Map;
+        this.route = route;
+    }
+
     public struct NavigationJob : IJob
     {
         public int startX;
@@ -66,7 +74,7 @@ public class NavigateButton: MonoBehaviour
 
         public void Execute()
         {
-            string pathStr = Navigation.navigate(startX, startY, endX, endY, Make2DArray<int>(map.ToArray(), 750, 750)).Item1;
+            string pathStr = Navigation.generateStringBuilderOfMap(Navigation.navigate(new Point(startX, startY), new Point(endX, endY), Make2DArray<int>(map.ToArray(), 750, 750)).Item1).ToString();
             Debug.Log("Reached destination");
             Debug.Log(pathStr.Length);
             Debug.Log(path.Length);
@@ -116,32 +124,10 @@ public class NavigateButton: MonoBehaviour
 
     void TaskOnClick(){
         processStartEndRoom();
-		// Create the job
-        var path = new NativeArray<char>(1659974, Allocator.TempJob);
-        var map = new NativeArray<int>(To1DArray(manageCoordinates.coordinateMap), Allocator.TempJob);
-        // Temp values
-        var job = new NavigationJob
-        {
-            startX = startEndLocation.StartX,
-            startY = startEndLocation.StartY,
-            endX = startEndLocation.EndX,
-            endY = startEndLocation.EndY,
-            path = path,
-            map = map
-        };
-
-        // Schedule the job
-        var handle = job.Schedule();
-
-        // Wait for the job to complete
-        handle.Complete();
-
-        // Convert the NativeArray to a string and return it
-        string result = new string(path.ToArray()).TrimEnd('\0');
-        path.Dispose();
-        map.Dispose();
-        Navigation.logMapToFile(result);
-        imageGenerator.SetMatrix(Make2DArray(path.ToArray(), manageCoordinates.coordinateMap.GetLength(0), manageCoordinates.coordinateMap.GetLength(1)));
+        
+        Point startPoint = new Point(startEndLocation.StartX,startEndLocation.StartY);
+        Point endPoint = new Point(startEndLocation.EndX,startEndLocation.EndY);
+        Navigation.TheadedNavigation(startPoint, endPoint, manageCoordinates.coordinateMap, imageGenerator);
         Texture2D temp = imageGenerator.Generate();
 	}
 
