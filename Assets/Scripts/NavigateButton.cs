@@ -142,7 +142,7 @@ public class NavigateButton: MonoBehaviour
         map.Dispose();
         Navigation.logMapToFile(result);
         imageGenerator.SetMatrix(Make2DArray(path.ToArray(), manageCoordinates.coordinateMap.GetLength(0), manageCoordinates.coordinateMap.GetLength(1)));
-
+        Texture2D temp = imageGenerator.Generate();
 	}
 
 
