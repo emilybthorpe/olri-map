@@ -48,7 +48,15 @@ public class NavigateButton: MonoBehaviour
     }
 
     void processStartEndRoom() {
-        startEndLocation = Navigation.GetStartEndLocationFromRoomNumbers(manageCoordinates, startRoom.Substring(0,3),endRoom.Substring(0,3));
+        try
+        {
+            startEndLocation = Navigation.GetStartEndLocationFromRoomNumbers(manageCoordinates, startRoom.Substring(0,3),endRoom.Substring(0,3));
+        }
+        catch (System.Exception)
+        {
+            Debug.LogError("No room selected!");
+            throw;
+        }
     }
 
     void setRooms(string startRoom, string endRoom) {
@@ -124,11 +132,12 @@ public class NavigateButton: MonoBehaviour
 
     void TaskOnClick(){
         processStartEndRoom();
-        
-        Point startPoint = new Point(startEndLocation.StartX,startEndLocation.StartY);
-        Point endPoint = new Point(startEndLocation.EndX,startEndLocation.EndY);
+
+        Debug.Log(startEndLocation.StartX + " , " + startEndLocation.StartY);
+
+        Point startPoint = new Point(startEndLocation.StartX, startEndLocation.StartY);
+        Point endPoint = new Point(startEndLocation.EndX, startEndLocation.EndY);
         Navigation.TheadedNavigation(startPoint, endPoint, manageCoordinates.coordinateMap, imageGenerator);
-        Texture2D temp = imageGenerator.Generate();
 	}
 
 

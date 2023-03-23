@@ -32,7 +32,7 @@ public class ManageCoordinates : MonoBehaviour
 
     void Start()
     {
-        setupLogOfMap();
+        
 
         hallwaysJSON = Resources.Load<TextAsset>("hallways");
         stairsJSON = Resources.Load<TextAsset>("stairs");
@@ -57,9 +57,12 @@ public class ManageCoordinates : MonoBehaviour
         
         establishStairs();
 
+        setupLogOfMap();
         createLogOfMap();
         
         finishedSettingUpMap = true;
+        Debug.Log(coordinateMap.GetLength(0));
+        Debug.Log(coordinateMap.GetLength(1));
         Debug.Log("finished setting up map");
     
         // 0 = inside room (walkable)
@@ -93,8 +96,8 @@ public class ManageCoordinates : MonoBehaviour
         //Content of the file
         string content = this.ToString();
         //Add some to text to it
-        File.AppendAllText(logPath, "/n/n");
-        File.AppendAllText(logPath, content);
+        File.AppendAllText(logPath, "Map\n\n");
+        File.AppendAllText(logPath, "\n" + content);
     }
 
     /// <summary>
@@ -168,15 +171,21 @@ public class ManageCoordinates : MonoBehaviour
     /// </summary>
     public Point GetCenterPointOfRoom(string number) {
         RoomInfo room = GetRoomFromNumber(number);
-        return new Point(room.coords[2] - room.coords[0], room.coords[3] - room.coords[1]);
+        int minX, maxX, minY, maxY;
+        GetMinMaxXY(room.coords, out minX, out maxX, out minY, out maxY);
+        return new Point((maxX + minX)/ 2, (maxY + minY) / 2);
     }
 
     public static Point GetCenterPointOfRoom(RoomInfo room) {
-        return new Point(room.coords[2] - room.coords[0], room.coords[3] - room.coords[1]);
+        int minX, maxX, minY, maxY;
+        GetMinMaxXY(room.coords, out minX, out maxX, out minY, out maxY);
+        return new Point((maxX + minX)/ 2, (maxY + minY) / 2);
     }
 
     public static Point GetCenterPointOfStair(Stair stair) {
-        return new Point(stair.coords[2] - stair.coords[0], stair.coords[3] - stair.coords[1]);
+        int minX, maxX, minY, maxY;
+        GetMinMaxXY(stair.coords, out minX, out maxX, out minY, out maxY);
+        return new Point((maxX + minX)/ 2, (maxY + minY) / 2);
     }
 
     public RoomInfo GetFloorStaircase(int floorNumber) {
@@ -291,10 +300,10 @@ public class ManageCoordinates : MonoBehaviour
     {
         if (points.Length == 0)
             return;
-        int highestx = points[0].X;
-        int highesty = points[0].Y;
-        int lowestx = points[0].X;
-        int lowesty = points[0].Y;
+        int highestx = int.MinValue;
+        int highesty = int.MinValue;
+        int lowestx = int.MaxValue;
+        int lowesty = int.MaxValue;
         for (int i = 0; i < points.Length; i++)
         {
             if (points[i].X > highestx)
@@ -384,7 +393,7 @@ public class ManageCoordinates : MonoBehaviour
                     Debug.Log("Not a room!");
                     continue;
             }
-
+            Debug.Log("establishing room: " + room.Number);
         }
     }
 
@@ -429,14 +438,17 @@ public class ManageCoordinates : MonoBehaviour
     public override string ToString()
     {
         StringBuilder sb = new StringBuilder(); 
+        int count = 0;
         for (int i = 0; i < coordinateMap.GetLength(0); i++)
         {
             for (int j = 0; j < coordinateMap.GetLength(1); j++)
             {
                 sb.Append(coordinateMap[i,j] + "\t");
+                count++;
             }
-            sb.Append("\n");
+            sb.Append(Environment.NewLine);
         }
+        Debug.Log(count);
         return sb.ToString();
     }
 }

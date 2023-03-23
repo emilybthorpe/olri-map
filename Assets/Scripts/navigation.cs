@@ -31,11 +31,10 @@ public class Navigation
     {    
         RoomInfo firstRoom = coordinateManager.GetRoomFromNumber(room1);
         RoomInfo secondRoom = coordinateManager.GetRoomFromNumber(room2);
-        int x1 = (firstRoom.coords[0] + firstRoom.coords[2])/2;
-        int y1 = (firstRoom.coords[1] + firstRoom.coords[3]) / 2;
-        int x2 = (secondRoom.coords[0] + secondRoom.coords[2])/2;
-        int y2 = (secondRoom.coords[1] + secondRoom.coords[3]) / 2;
-        return new StartEndLocation(x1,y1,x2,y2);
+        Point firstRoomPoint = ManageCoordinates.GetCenterPointOfRoom(firstRoom);
+        Point secondRoomPoint = ManageCoordinates.GetCenterPointOfRoom(secondRoom);
+
+        return new StartEndLocation(firstRoomPoint.X,firstRoomPoint.Y,secondRoomPoint.X,secondRoomPoint.Y);
     }
 
     public static void logMapToFile(string mapString)
@@ -117,6 +116,7 @@ public class Navigation
     {
         logMapToFile(generateStringBuilderOfMap(path).ToString());
         imageGenerator.SetMatrix(path);
+        Texture2D temp = imageGenerator.Generate();
     }
 
     public static List<Point> SetZValueOnPoints(List<Point> points, int value) {
@@ -168,6 +168,7 @@ public class Navigation
             Debug.Log(checkTile);
             if (checkTile.X == finish.X && checkTile.Y == finish.Y)
             {
+                Debug.Log("finished");
                 int[,] path = getArrayMap(checkTile, map);
                 List<Point> route = generateRouteFromMap(map);
                 return (path, route);
@@ -178,8 +179,11 @@ public class Navigation
 
             var walkableTiles = GetWalkableTiles(map, checkTile, finish);
 
+            int count = 0;
             foreach (var walkableTile in walkableTiles)
             {
+                count++;
+                Debug.Log("Walkable tile " + count + " " + walkableTile);
                 //Allready visited this tile
                 if (visitedTiles.Any(x => x.X == walkableTile.X && x.Y == walkableTile.Y))
                     continue;
