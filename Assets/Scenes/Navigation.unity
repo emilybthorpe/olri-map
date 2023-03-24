@@ -37550,7 +37550,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 659573280}
         m_TargetAssemblyTypeName: ToggleHandler, Assembly-CSharp
-        m_MethodName: close
+        m_MethodName: changePanelState
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -37613,6 +37613,7 @@ MonoBehaviour:
   panel: {fileID: 1520836047}
   openPosition: {x: 0, y: 423, z: 0}
   closePosition: {x: 0, y: -409, z: 0}
+  isOpen: 0
 --- !u!1 &659837160
 GameObject:
   m_ObjectHideFlags: 0
