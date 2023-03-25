@@ -248,7 +248,7 @@ public class coordinateTranslate : MonoBehaviour
         }
     }
 
-    public static List<string> get_direction_list()
+    public List<string> get_direction_list()
     {
         return direction_list;
     }
