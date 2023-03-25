@@ -29,6 +29,7 @@ public class ManageCoordinates : MonoBehaviour
 
     private Dictionary<string, RoomInfo> roomNumbers;
 
+
     void Start()
     {
         
@@ -44,25 +45,34 @@ public class ManageCoordinates : MonoBehaviour
         rooms = JsonUtility.FromJson<Rooms>(roomsJSON.text);
         stairs = JsonUtility.FromJson<Stairs>(stairsJSON.text);
 
-        SetupMap();
-        
-        finishedSettingUpMap = true;
-
-        Debug.Log("finished setting up map");
-    }
 
 
-    /// <summary>
-    /// Mark maps various components (outside, hallways, rooms, ect)
-    /// </summary>
-    private void SetupMap() {
+        // Start my marking the entire map as outside, before marking the speicifcs of the building
         markAllMapAsOutside();
+
+
+        
         establishRooms();
         establishHallways();
+        
         establishStairs();
+
         setupLogOfMap();
         createLogOfMap();
+        
+        finishedSettingUpMap = true;
+        Debug.Log(coordinateMap.GetLength(0));
+        Debug.Log(coordinateMap.GetLength(1));
+        Debug.Log("finished setting up map");
+    
+        // 0 = inside room (walkable)
+        // 1 = wall (not walkable)
+        // 2 = hallway (walkable)
+        // -1 = inaccseasable (outside buidling, not walkable)
+        // 
+        // Logic: getting from point A to Point B using just walkable areas
     }
+
 
     /// <summary>
     /// Prepares a text file to be populated with map information, deleting old verisions
@@ -101,50 +111,15 @@ public class ManageCoordinates : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// mark stairs (staircases and elevators)
-    /// </summary> 
-    void establishStairs() {
-        foreach (Stair stair in stairs.stairs)
-        {
-            int[] coordinates = stair.coords;
-            markCoordinatesWithValue(coordinates, 2);
-        }
-    }
-
-    /// <summary>
-    /// mark hallway locations in map
-    /// </summary>
-    void establishHallways() {
-        foreach (Hallway hallway in hallways.hallways)
-        {
-            int[] coordinates = hallway.coords;
-            markCoordinatesWithValue(coordinates, 2);
-        }
-    }
-
-    /// <summary>
-    /// Mark polygonal room, first the outer wall, then the inside 
-    /// </summary>
-    private void MarkPolygonRoom(Point[] points)
-    {
-        //First, mark outer walls
-        MarkOuterLinesOfPolygon(points);
-
-        //Then, mark inside room
-        MarkPointsInPolygon(points);
-
-    }
-
-
-    /// Utility Methods
 
     /// <summary>
     /// Returns true if given point is inside any room
     /// </summary>
     bool CheckIfPointInRoom(int x, int y) {
+        Debug.Log(coordinateMap[y,x]);
         return coordinateMap[y, x] == 0;
     }
+
 
     /// <Summary>
     /// Uses eucledian distance formal to find nearest stair from point. Very fast, but can be very inaccurate
@@ -154,7 +129,7 @@ public class ManageCoordinates : MonoBehaviour
         Stair closestStair = null; 
         foreach (Stair stair in stairs.stairs)
         {
-            Point centerPoint = CoordinateMapHelper.GetCenterPointOfStair(stair);
+            Point centerPoint = GetCenterPointOfStair(stair);
             double distance = Math.Sqrt(Math.Pow((centerPoint.X - startPoint.X), 2) + Math.Pow((centerPoint.Y - startPoint.Y), 2));
             if (distance < nearestDistance ) {
                 nearestDistance = distance;
@@ -164,12 +139,9 @@ public class ManageCoordinates : MonoBehaviour
         return closestStair;
     }
 
-    /// <Summary>
-    /// Finds and returns room class from a given room number
-    /// If there is no such room, returns null
-    /// </summary>
     public RoomInfo GetRoomFromNumber(string number) {
         // verify room number is valid
+        Debug.Log(number);
         try
         {
             return roomNumbers[number.Substring(0,3)];
@@ -181,16 +153,18 @@ public class ManageCoordinates : MonoBehaviour
         }
     }
 
-    /// <Summary>
-    /// Generates start end location from center of first room to center of second room
-    /// </Summary>
-    public StartEndLocation GetStartEndLocationFromRoomNumbers(string room1, string room2) 
-    {    
-        Point firstRoomPoint = CoordinateMapHelper.GetCenterPointOfRoom(GetRoomFromNumber(room1));
-        Point secondRoomPoint = CoordinateMapHelper.GetCenterPointOfRoom(GetRoomFromNumber(room2));
-
-        return new StartEndLocation(firstRoomPoint.X,firstRoomPoint.Y,secondRoomPoint.X,secondRoomPoint.Y);
+    /// <summary>
+    /// Get's floor from room number
+    /// </summary>
+    public static int GetFloor(string number) {
+        // Floor number is always the first digit of the room number
+        return number[0] - 48;
     }
+
+    public static int GetFloor(RoomInfo room) {
+        return GetFloor(room.Number);
+    }
+
     
     /// <summary>
     /// Get rooms center point
@@ -198,22 +172,32 @@ public class ManageCoordinates : MonoBehaviour
     public Point GetCenterPointOfRoom(string number) {
         RoomInfo room = GetRoomFromNumber(number);
         int minX, maxX, minY, maxY;
-        CoordinateMapHelper.GetMinMaxXY(room.coords, out minX, out maxX, out minY, out maxY);
+        GetMinMaxXY(room.coords, out minX, out maxX, out minY, out maxY);
         return new Point((maxX + minX)/ 2, (maxY + minY) / 2);
     }
 
-    /// <summary>
-    /// Gets staircase of floor
-    /// </summary>
+    public static Point GetCenterPointOfRoom(RoomInfo room) {
+        int minX, maxX, minY, maxY;
+        GetMinMaxXY(room.coords, out minX, out maxX, out minY, out maxY);
+        return new Point((maxX + minX)/ 2, (maxY + minY) / 2);
+    }
+
+    public static Point GetCenterPointOfStair(Stair stair) {
+        int minX, maxX, minY, maxY;
+        GetMinMaxXY(stair.coords, out minX, out maxX, out minY, out maxY);
+        return new Point((maxX + minX)/ 2, (maxY + minY) / 2);
+    }
+
     public RoomInfo GetFloorStaircase(int floorNumber) {
         foreach (RoomInfo room in rooms.rooms)
         {
-            if(CoordinateMapHelper.GetFloor(room) == floorNumber && room.Number.Length == 2) {
+            if(GetFloor(room) == floorNumber && room.Number.Length == 2) {
                 return room;
             }
         }
         return null;
     }
+
 
     /// <summary>
     /// Returns a Room containing the inputed point (represented as x,y coordinates)
@@ -236,10 +220,34 @@ public class ManageCoordinates : MonoBehaviour
         return null;
     }
 
+
+    /// <summary>
+    /// mark stairs (staircases and elevators)
+    /// </summary> 
+    void establishStairs() {
+        foreach (Stair stair in stairs.stairs)
+        {
+            int[] coordinates = stair.coords;
+            markCoordinatesWithValue(coordinates, 2);
+        }
+    }
+
+
+    /// <summary>
+    /// mark hallway locations in map
+    /// </summary>
+    void establishHallways() {
+        foreach (Hallway hallway in hallways.hallways)
+        {
+            int[] coordinates = hallway.coords;
+            markCoordinatesWithValue(coordinates, 2);
+        }
+    }
+
     private void markCoordinatesWithValue(int[] coordinates, int value, int modifier=0)
     {
         int minX, maxX, minY, maxY;
-        CoordinateMapHelper.GetMinMaxXY(coordinates, out minX, out maxX, out minY, out maxY);
+        GetMinMaxXY(coordinates, out minX, out maxX, out minY, out maxY);
         for (int x = minX + modifier; x < maxX; x++)
         {
             for (int y = minY + modifier; y < maxY; y++)
@@ -247,6 +255,19 @@ public class ManageCoordinates : MonoBehaviour
                 coordinateMap[y, x] = value;
             }
         }
+    }
+
+    /// <summary>
+    /// Mark polygonal room, first the outer wall, then the inside 
+    /// </summary>
+    private void MarkPolygonRoom(Point[] points)
+    {
+        //First, mark outer walls
+        MarkOuterLinesOfPolygon(points);
+
+        //Then, mark inside room
+        MarkPointsInPolygon(points);
+
     }
 
     /// <summary>
@@ -298,12 +319,37 @@ public class ManageCoordinates : MonoBehaviour
         {
             for (int y = lowesty; y < highesty; y++)
             {
-                if (CoordinateMapHelper.IsPointInPolygon(points, new Point(x,y)))
+                if (IsPointInPolygon(points, new Point(x,y)))
                 {
                     coordinateMap[y, x] = 0;
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// Determines if the given point is inside the polygon
+    /// From https://stackoverflow.com/a/14998816
+    /// </summary>
+    /// <param name="polygon">the vertices of polygon</param>
+    /// <param name="testPoint">the given point</param>
+    /// <returns>true if the point is inside the polygon; otherwise, false</returns>
+    private bool IsPointInPolygon(Point[] polygon, Point testPoint)
+    {
+        bool result = false;
+        int j = polygon.Count() - 1;
+        for (int i = 0; i < polygon.Count(); i++)
+        {
+            if (polygon[i].Y < testPoint.Y && polygon[j].Y >= testPoint.Y || polygon[j].Y < testPoint.Y && polygon[i].Y >= testPoint.Y)
+            {
+                if (polygon[i].X + (testPoint.Y - polygon[i].Y) / (polygon[j].Y - polygon[i].Y) * (polygon[j].X - polygon[i].X) < testPoint.X)
+                {
+                    result = !result;
+                }
+            }
+            j = i;
+        }
+        return result;
     }
     
     /// <summary>
@@ -357,7 +403,7 @@ public class ManageCoordinates : MonoBehaviour
     private void MarkRectRoom(int[] coordinates)
     {
         int minX, maxX, minY, maxY;
-        CoordinateMapHelper.GetMinMaxXY(coordinates, out minX, out maxX, out minY, out maxY);
+        GetMinMaxXY(coordinates, out minX, out maxX, out minY, out maxY);
         //Starting from x1 to x2
         for (int i = minX; i <= maxX; i++)
         {
@@ -377,20 +423,32 @@ public class ManageCoordinates : MonoBehaviour
         markCoordinatesWithValue(coordinates, 0 /*o, inside room*/, 1 /*start outside wall*/);
     }
 
+    private static void GetMinMaxXY(int[] coordinates, out int minX, out int maxX, out int minY, out int maxY)
+    {
+        // Get min and max X,Y values (because the image-map is inconsistantly marked left-to-right or right-to-left)
+        minX = Math.Min(coordinates[0], coordinates[2]);
+        maxX = Math.Max(coordinates[0], coordinates[2]);
+        minY = Math.Min(coordinates[1], coordinates[3]);
+        maxY = Math.Max(coordinates[1], coordinates[3]);
+    }
+
     /// <summary>
     /// returns the map represenation as a string
     /// </summary>
     public override string ToString()
     {
         StringBuilder sb = new StringBuilder(); 
+        int count = 0;
         for (int i = 0; i < coordinateMap.GetLength(0); i++)
         {
             for (int j = 0; j < coordinateMap.GetLength(1); j++)
             {
                 sb.Append(coordinateMap[i,j] + "\t");
+                count++;
             }
             sb.Append(Environment.NewLine);
         }
+        Debug.Log(count);
         return sb.ToString();
     }
 }
