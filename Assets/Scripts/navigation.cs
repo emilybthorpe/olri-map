@@ -116,7 +116,7 @@ public class Navigation
     {
         logMapToFile(generateStringBuilderOfMap(path).ToString());
         imageGenerator.SetMatrix(path);
-        imageGenerator.Generate();
+        Texture2D temp = imageGenerator.Generate();
     }
 
     public static List<Point> SetZValueOnPoints(List<Point> points, int value) {

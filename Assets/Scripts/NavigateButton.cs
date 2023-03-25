@@ -38,7 +38,12 @@ public class NavigateButton: MonoBehaviour
         imageGenerator = new BitMapImageGenerator();
         Button btn = navigateButton.GetComponent<Button>();
         //startEndLocation = new StartEndLocation(510, 132,546,134);
+
+       
         setRooms(PlayerPrefs.GetString("currentLocation"), PlayerPrefs.GetString("destination"));
+
+
+
         btn.onClick.AddListener(TaskOnClick);
     }
 
