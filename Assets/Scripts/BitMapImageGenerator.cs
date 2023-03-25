@@ -6,12 +6,11 @@ public class BitMapImageGenerator : MonoBehaviour
 {
     public Texture2D bitmapTexture;
     public int[,] matrix;
-    public Image bitmapImage;
-
+    public MapGenScript mapBuilder;
     void Start () {
     }
 
-    private int[,] proccesMatrix(char[,] matrix) {
+    private int[,] processMatrix(char[,] matrix) {
         int[,] intArray = new int[matrix.GetLength(0), matrix.GetLength(1)];
         for(int x = 0; x < matrix.GetLength(0); x++) {
             for(int y = 0; y < matrix.GetLength(1); y++) {
@@ -27,12 +26,15 @@ public class BitMapImageGenerator : MonoBehaviour
 
     public void SetMatrix(int[,] matrix) {
         this.matrix = matrix;
+        
     }
 
-    public Texture2D Generate(){
+    public void Generate(){
         processArray();
         GenerateBitmap();
-        return this.bitmapTexture;
+        mapBuilder.Map = this.bitmapTexture;
+        mapBuilder.PressButon();
+        
     }
 
     public void processArray(){

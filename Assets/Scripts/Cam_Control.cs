@@ -14,11 +14,26 @@ public class Cam_Control : MonoBehaviour
     private Vector3 initialPosition;
     private float initialZoom;
     private float lastTapTime;
-
+    public GameObject mapHolder;
     void Start()
     {
         initialPosition = transform.position;
         initialZoom = Camera.main.orthographicSize;
+         if (mapHolder != null)
+        {
+            // Get the bounds of the mapHolder object
+            Vector3 center = mapHolder.transform.position;
+
+            // Calculate the distance from the camera to the mapHolder object
+            float distance = CalculateDistance(mapHolder.transform.position);
+
+            // Set the position of the camera to look at the center of the mapHolder object
+            transform.position = center - transform.forward * distance;
+
+            // Orient the camera to look at the center of the mapHolder object
+            transform.LookAt(center);
+            Debug.Log("Kamikaze");
+        }
     }
 
     void Update()
@@ -66,5 +81,10 @@ public class Cam_Control : MonoBehaviour
             float mouseX = Input.GetAxis("Mouse X") * rotateSpeed * Time.deltaTime;
             transform.Rotate(0, mouseX, 0, Space.World);
         }
+    }
+    private float CalculateDistance(Vector3 position)
+    {
+        float distance = (position - transform.position).magnitude;
+        return distance;
     }
 }
