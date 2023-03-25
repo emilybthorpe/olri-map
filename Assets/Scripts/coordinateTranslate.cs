@@ -237,20 +237,20 @@ public class coordinateTranslate : MonoBehaviour
         List<Point> test1 = new List<Point>(tester1);
         Calculate_Coordnite_Distance(test1);
 
-        List<Point> test2 = new List<Point>(tester2);
-        Calculate_Coordnite_Distance(test2);
+        //List<Point> test2 = new List<Point>(tester2);
+        //Calculate_Coordnite_Distance(test2);
 
-        List<Point> test3 = new List<Point>(tester3);
-        Calculate_Coordnite_Distance(test3);
+        //List<Point> test3 = new List<Point>(tester3);
+        //Calculate_Coordnite_Distance(test3);
 
-        List<Point> test4 = new List<Point>(tester4);
-        Calculate_Coordnite_Distance(test4);
+        //List<Point> test4 = new List<Point>(tester4);
+        //Calculate_Coordnite_Distance(test4);
 
-        List<Point> test5 = new List<Point>(tester5);
-        Calculate_Coordnite_Distance(test5);
+        //List<Point> test5 = new List<Point>(tester5);
+        //Calculate_Coordnite_Distance(test5);
 
-        List<Point> test6 = new List<Point>(tester6);
-        Calculate_Coordnite_Distance(test6);
+        //List<Point> test6 = new List<Point>(tester6);
+        //Calculate_Coordnite_Distance(test6);
 
     }
 
