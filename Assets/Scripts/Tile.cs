@@ -3,7 +3,7 @@ Adapted with modifications from https://dotnetcoretutorials.com/2020/07/25/a-sea
 **/
 using System;
 
-class Tile
+public class Tile
 {
 	public int X { get; set; }
 	public int Y { get; set; }
