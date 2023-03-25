@@ -14,6 +14,7 @@ public class coordinateTranslate : MonoBehaviour
     public static Point[] tester4 = { new Point(250, 125), new Point(250, 375), new Point(125, 375), new Point(125, 125), new Point(0, 125), new Point(0, 375)};
     public static Point[] tester5 = { new Point(0, 375), new Point(0, 125), new Point(125, 125), new Point(125, 0), new Point(250, 0)};
     public static Point[] tester6 = { new Point(250, 0), new Point(125, 0), new Point(125, 125), new Point(0, 125), new Point(0, 375)};
+    public static List<string> directions_list;
 
 
     /*
@@ -24,6 +25,7 @@ public class coordinateTranslate : MonoBehaviour
     {
         //initializing booleans
         positive_or_negative_x = positive_or_negative_y = turn_right = false;
+        directions_list = new List<string>();
 
         //accumulator for every coordinate in the list.
         int coordinate_accumulator = 0;
@@ -201,35 +203,47 @@ public class coordinateTranslate : MonoBehaviour
         {
             if (turn_right)
             {
-                Debug.Log("Please turn right.");
+                //Debug.Log("Please turn right.");
+                directions_list.Add("Please turn right.");
                 if (x_feet != 0)
                 {
-                    Debug.Log("Now move forward " + Math.Ceiling(x_feet) + "feet.");
+                    //Debug.Log("Now move forward " + Math.Ceiling(x_feet) + "feet.");
+                    directions_list.Add("Now move forward " + Math.Ceiling(x_feet) + "feet.");
                 }
                 else
                 {
-                    Debug.Log("Now move forward " + Math.Ceiling(y_feet) + "feet.");
+                    //Debug.Log("Now move forward " + Math.Ceiling(y_feet) + "feet.");
+                    directions_list.Add("Now move forward " + Math.Ceiling(y_feet) + "feet.");
                 }
 
             }
             else
             {
-                Debug.Log("Please turn left.");
+                //Debug.Log("Please turn left.");
+                directions_list.Add("Please turn left.");
                 if (x_feet != 0)
                 {
-                    Debug.Log("Now move forward " + Math.Ceiling(x_feet) + "feet.");
+                    //Debug.Log("Now move forward " + Math.Ceiling(x_feet) + "feet.");
+                    directions_list.Add("Now move forward " + Math.Ceiling(x_feet) + "feet.");
                 }
                 else
                 {
-                    Debug.Log("Now move forward " + Math.Ceiling(y_feet) + "feet.");
+                    //Debug.Log("Now move forward " + Math.Ceiling(y_feet) + "feet.");
+                    directions_list.Add("Now move forward " + Math.Ceiling(y_feet) + "feet.");
                 }
             }
         }
         //if this is the last forward movement neede, then end the directions
         if (path_accumulator == coordinates.Count)
         {
-            Debug.Log("You have reached your destination!");
+            //Debug.Log("You have reached your destination!");
+            directions_list.Add("You have reached your destination!");
         }
+    }
+
+    public static List<string> get_direction_list()
+    {
+        return directions_list;
     }
 
     void Start()
