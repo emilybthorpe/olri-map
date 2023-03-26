@@ -18,3 +18,11 @@ It is highly recommended for cluster mode to make rooms as modulated as possible
 when satisfied, press Build Object.
 
 ChangeLog V2.5 new ceiling floor prefab and rotation added
+
+
+value       color      symbol
+
+0 || 2     White        Floor
+1          Red         Wall
+3         Green         Outside Corner
+

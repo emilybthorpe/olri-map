@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
-public class Stair
+public class Stair : RoomInfo
 {
     public string number;
     

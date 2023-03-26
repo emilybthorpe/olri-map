@@ -14,7 +14,8 @@ public class coordinateTranslate : MonoBehaviour
     public static Point[] tester4 = { new Point(250, 125), new Point(250, 375), new Point(125, 375), new Point(125, 125), new Point(0, 125), new Point(0, 375)};
     public static Point[] tester5 = { new Point(0, 375), new Point(0, 125), new Point(125, 125), new Point(125, 0), new Point(250, 0)};
     public static Point[] tester6 = { new Point(250, 0), new Point(125, 0), new Point(125, 125), new Point(0, 125), new Point(0, 375)};
-    public static List<string> directions_list;
+    public static List<string> direction_list;
+
 
 
     /*
@@ -25,7 +26,7 @@ public class coordinateTranslate : MonoBehaviour
     {
         //initializing booleans
         positive_or_negative_x = positive_or_negative_y = turn_right = false;
-        directions_list = new List<string>();
+        direction_list = new List<string>();
 
         //accumulator for every coordinate in the list.
         int coordinate_accumulator = 0;
@@ -196,7 +197,8 @@ public class coordinateTranslate : MonoBehaviour
         //if this is the first direction
         if (path_accumulator == 2)
         {
-            Debug.Log("Please move forward " + Math.Ceiling(x_feet + y_feet) + " feet.");
+            //Debug.Log("Please move forward " + Math.Ceiling(x_feet + y_feet) + " feet.");
+            direction_list.Add("Please move forward " + Math.Ceiling(x_feet + y_feet) + " feet.");
         }
         //otherwise add a turn and more forward movement
         else
@@ -204,32 +206,35 @@ public class coordinateTranslate : MonoBehaviour
             if (turn_right)
             {
                 //Debug.Log("Please turn right.");
-                directions_list.Add("Please turn right.");
+                direction_list.Add("Please turn right.");
+
                 if (x_feet != 0)
                 {
                     //Debug.Log("Now move forward " + Math.Ceiling(x_feet) + "feet.");
-                    directions_list.Add("Now move forward " + Math.Ceiling(x_feet) + "feet.");
+                    direction_list.Add("Now move forward " + Math.Ceiling(x_feet) + "feet.");
                 }
                 else
                 {
                     //Debug.Log("Now move forward " + Math.Ceiling(y_feet) + "feet.");
-                    directions_list.Add("Now move forward " + Math.Ceiling(y_feet) + "feet.");
+                    direction_list.Add("Now move forward " + Math.Ceiling(y_feet) + "feet.");
                 }
 
             }
             else
             {
                 //Debug.Log("Please turn left.");
-                directions_list.Add("Please turn left.");
+                direction_list.Add("Please turn left.");
+
                 if (x_feet != 0)
                 {
                     //Debug.Log("Now move forward " + Math.Ceiling(x_feet) + "feet.");
-                    directions_list.Add("Now move forward " + Math.Ceiling(x_feet) + "feet.");
+                    direction_list.Add("Now move forward " + Math.Ceiling(x_feet) + "feet.");
                 }
                 else
                 {
                     //Debug.Log("Now move forward " + Math.Ceiling(y_feet) + "feet.");
-                    directions_list.Add("Now move forward " + Math.Ceiling(y_feet) + "feet.");
+                    direction_list.Add("Now move forward " + Math.Ceiling(y_feet) + "feet.");
+
                 }
             }
         }
@@ -237,13 +242,15 @@ public class coordinateTranslate : MonoBehaviour
         if (path_accumulator == coordinates.Count)
         {
             //Debug.Log("You have reached your destination!");
-            directions_list.Add("You have reached your destination!");
+            direction_list.Add("You have reached your destination!");
+
         }
     }
 
-    public static List<string> get_direction_list()
+    public List<string> get_direction_list()
     {
-        return directions_list;
+        return direction_list;
+
     }
 
     void Start()
@@ -251,20 +258,20 @@ public class coordinateTranslate : MonoBehaviour
         List<Point> test1 = new List<Point>(tester1);
         Calculate_Coordnite_Distance(test1);
 
-        List<Point> test2 = new List<Point>(tester2);
-        Calculate_Coordnite_Distance(test2);
+        //List<Point> test2 = new List<Point>(tester2);
+        //Calculate_Coordnite_Distance(test2);
 
-        List<Point> test3 = new List<Point>(tester3);
-        Calculate_Coordnite_Distance(test3);
+        //List<Point> test3 = new List<Point>(tester3);
+        //Calculate_Coordnite_Distance(test3);
 
-        List<Point> test4 = new List<Point>(tester4);
-        Calculate_Coordnite_Distance(test4);
+        //List<Point> test4 = new List<Point>(tester4);
+        //Calculate_Coordnite_Distance(test4);
 
-        List<Point> test5 = new List<Point>(tester5);
-        Calculate_Coordnite_Distance(test5);
+        //List<Point> test5 = new List<Point>(tester5);
+        //Calculate_Coordnite_Distance(test5);
 
-        List<Point> test6 = new List<Point>(tester6);
-        Calculate_Coordnite_Distance(test6);
+        //List<Point> test6 = new List<Point>(tester6);
+        //Calculate_Coordnite_Distance(test6);
 
     }
 
