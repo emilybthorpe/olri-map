@@ -17,6 +17,7 @@ public class coordinateTranslate : MonoBehaviour
     public static List<string> direction_list;
 
 
+
     /*
      *This method will take in a list of Points. It will then
      *calculate the difference in pixels between those coordinates.
@@ -216,7 +217,6 @@ public class coordinateTranslate : MonoBehaviour
                 {
                     //Debug.Log("Now move forward " + Math.Ceiling(y_feet) + "feet.");
                     direction_list.Add("Now move forward " + Math.Ceiling(y_feet) + "feet.");
-
                 }
 
             }
@@ -229,7 +229,6 @@ public class coordinateTranslate : MonoBehaviour
                 {
                     //Debug.Log("Now move forward " + Math.Ceiling(x_feet) + "feet.");
                     direction_list.Add("Now move forward " + Math.Ceiling(x_feet) + "feet.");
-
                 }
                 else
                 {
@@ -251,6 +250,7 @@ public class coordinateTranslate : MonoBehaviour
     public List<string> get_direction_list()
     {
         return direction_list;
+
     }
 
     void Start()
