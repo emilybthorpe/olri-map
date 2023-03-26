@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class BitMapImageGenerator : MonoBehaviour
 {
+    public ManageCoordinates manageCoordinates; 
     public Texture2D bitmapTexture;
     public int[,] matrix;
     public Image bitmapImage;
@@ -53,11 +54,12 @@ public class BitMapImageGenerator : MonoBehaviour
                 }
             }
         }
+        this.matrix = this.matrix;
     }
 
     public void GenerateBitmap () {
-        int width = matrix.GetLength(0);
-        int height = matrix.GetLength(1);
+        int width = this.matrix.GetLength(0);
+        int height = this.matrix.GetLength(1);
 
         bitmapTexture = new Texture2D(width, height);
         for (int y = 0; y < height; y++) {
