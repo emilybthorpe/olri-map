@@ -68,11 +68,11 @@ public class Navigation
         return (floorMaps, completeRoute);
     }
 
-    public static void TheadedNavigation(Point startPoint, Point endPoint, int[,] map, BitMapImageGenerator imageGenerator) {
+    public static void TheadedNavigation(Point startPoint, Point endPoint, int[,] map, NavigationUIHolder uiholder) {
 
         ResultCallbackDelegate resultCallbackDelegate = new ResultCallbackDelegate(ResultCallBackMethod);
 
-        NavigateHelper obj = new NavigateHelper(startPoint,endPoint,map, imageGenerator, resultCallbackDelegate);
+        NavigateHelper obj = new NavigateHelper(startPoint,endPoint,map, uiholder, resultCallbackDelegate);
 
         //Creating the Thread using ThreadStart delegate
         Thread T1 = new Thread(new ThreadStart(obj.CalculatePath));
@@ -81,9 +81,12 @@ public class Navigation
     }
 
     
-    public static void ResultCallBackMethod(int[,] path, List<Point> route, BitMapImageGenerator imageGenerator)
+    public static void ResultCallBackMethod(int[,] path, List<Point> route, NavigationUIHolder navigationUIHolder)
     {
         logMapToFile(AStar.generateStringBuilderOfMap(path).ToString());
+        BitMapImageGenerator imageGenerator = navigationUIHolder.imageGenerator;
+        coordinateTranslate coordinateTranslator = navigationUIHolder.coordinateTranslate;
+        coordinateTranslate.Calculate_Coordnite_Distance(route);
         imageGenerator.SetMatrix(path);
         imageGenerator.Generate();
     }

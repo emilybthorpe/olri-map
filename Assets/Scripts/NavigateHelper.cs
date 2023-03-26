@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-public delegate void ResultCallbackDelegate(int[,] Map, List<Point> route, BitMapImageGenerator imageGenerator);
+public delegate void ResultCallbackDelegate(int[,] Map, List<Point> route, NavigationUIHolder navigationUIHolder);
 
 public class NavigateHelper
 {
@@ -8,16 +8,16 @@ public class NavigateHelper
     private Point _EndPoint;
     private int[,] _Map;
 
-    private BitMapImageGenerator _imageGenerator;
+    private NavigationUIHolder _navigationUIHolder;
 
     private ResultCallbackDelegate _resultCallbackDelegate;
 
-    public NavigateHelper(Point StartPoint, Point EndPoint, int[,] map, BitMapImageGenerator imageGenerator, ResultCallbackDelegate resultCallbackDelagate)
+    public NavigateHelper(Point StartPoint, Point EndPoint, int[,] map, NavigationUIHolder navigationHolder, ResultCallbackDelegate resultCallbackDelagate)
     {
         _StartPoint = StartPoint;
         _EndPoint = EndPoint;
         _Map = map;
-        _imageGenerator = imageGenerator;
+        _navigationUIHolder = navigationHolder;
         _resultCallbackDelegate = resultCallbackDelagate;
     }
 
@@ -32,7 +32,7 @@ public class NavigateHelper
         //Before the end of the thread function call the callback method
         if (_resultCallbackDelegate != null)
         {
-            _resultCallbackDelegate(path,route,_imageGenerator);
+            _resultCallbackDelegate(path,route, _navigationUIHolder);
         }
     }
 }

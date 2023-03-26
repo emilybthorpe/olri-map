@@ -21,6 +21,8 @@ public class NavigateButton: MonoBehaviour
     public ManageCoordinates manageCoordinates;
 
     public BitMapImageGenerator imageGenerator;
+
+    public coordinateTranslate coordinateTranslate;
     
     public StartEndLocation startEndLocation;
     
@@ -67,8 +69,9 @@ public class NavigateButton: MonoBehaviour
 
         Debug.Log(startEndLocation.StartX + " , " + startEndLocation.StartY);
 
+        NavigationUIHolder navigationUIHolder = new NavigationUIHolder(imageGenerator,coordinateTranslate);
         Point startPoint = new Point(startEndLocation.StartX, startEndLocation.StartY);
         Point endPoint = new Point(startEndLocation.EndX, startEndLocation.EndY);
-        Navigation.TheadedNavigation(startPoint, endPoint, manageCoordinates.coordinateMap, imageGenerator);
+        Navigation.TheadedNavigation(startPoint, endPoint, manageCoordinates.coordinateMap, navigationUIHolder);
 	}
 }
