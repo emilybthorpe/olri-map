@@ -7,13 +7,7 @@ public class coordinateTranslate : MonoBehaviour
     //true is positive
     public static bool positive_or_negative_x, positive_or_negative_y, turn_right;
 
-    //These are tester lists
-    public static Point[] tester1 = { new Point(0, 0), new Point(0, 375), new Point(250, 375), new Point(250, 125), new Point(375, 125), new Point(375, 375)};
-    public static Point[] tester2 = { new Point(375, 375), new Point(375, 125), new Point(250, 125), new Point(250, 375), new Point(0, 375), new Point(0, 0)};
-    public static Point[] tester3 = { new Point(0, 375), new Point(0, 125), new Point(125, 125), new Point(125, 375), new Point(250, 375), new Point(250, 125)};
-    public static Point[] tester4 = { new Point(250, 125), new Point(250, 375), new Point(125, 375), new Point(125, 125), new Point(0, 125), new Point(0, 375)};
-    public static Point[] tester5 = { new Point(0, 375), new Point(0, 125), new Point(125, 125), new Point(125, 0), new Point(250, 0)};
-    public static Point[] tester6 = { new Point(250, 0), new Point(125, 0), new Point(125, 125), new Point(0, 125), new Point(0, 375)};
+    //list that stores the direcitons
     public static List<string> direction_list;
 
 
@@ -253,26 +247,5 @@ public class coordinateTranslate : MonoBehaviour
 
     }
 
-    void Start()
-    {
-        List<Point> test1 = new List<Point>(tester1);
-        Calculate_Coordnite_Distance(test1);
-
-        //List<Point> test2 = new List<Point>(tester2);
-        //Calculate_Coordnite_Distance(test2);
-
-        //List<Point> test3 = new List<Point>(tester3);
-        //Calculate_Coordnite_Distance(test3);
-
-        //List<Point> test4 = new List<Point>(tester4);
-        //Calculate_Coordnite_Distance(test4);
-
-        //List<Point> test5 = new List<Point>(tester5);
-        //Calculate_Coordnite_Distance(test5);
-
-        //List<Point> test6 = new List<Point>(tester6);
-        //Calculate_Coordnite_Distance(test6);
-
-    }
 
 }
