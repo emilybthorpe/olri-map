@@ -25,6 +25,8 @@ public class NavigateButton: MonoBehaviour
     public coordinateTranslate coordinateTranslate;
     
     public StartEndLocation startEndLocation;
+
+    public NavigationUIHolder navigationUIHolder;
     
     public string startRoom;
     public string endRoom;
@@ -34,6 +36,9 @@ public class NavigateButton: MonoBehaviour
     void Start()
     {
         imageGenerator = new BitMapImageGenerator();
+        navigationUIHolder = new NavigationUIHolder();
+        navigationUIHolder.imageGenerator = imageGenerator;
+        navigationUIHolder.coordinateTranslate = coordinateTranslate;
         Button btn = navigateButton.GetComponent<Button>();
        
         // Get rooms from playerprefs
@@ -69,9 +74,26 @@ public class NavigateButton: MonoBehaviour
 
         Debug.Log(startEndLocation.StartX + " , " + startEndLocation.StartY);
 
-        NavigationUIHolder navigationUIHolder = new NavigationUIHolder(imageGenerator,coordinateTranslate);
         Point startPoint = new Point(startEndLocation.StartX, startEndLocation.StartY);
         Point endPoint = new Point(startEndLocation.EndX, startEndLocation.EndY);
         Navigation.TheadedNavigation(startPoint, endPoint, manageCoordinates.coordinateMap, navigationUIHolder);
 	}
+
+    void Update() {
+        if(navigationUIHolder.finishedNavigation) {
+            finishNavigationJobs();
+            navigationUIHolder.finishedNavigation = false;
+        }
+    }
+
+    void finishNavigationJobs() {
+        int [,] path = navigationUIHolder.path;
+        List<Point> route = navigationUIHolder.route;
+        Navigation.logMapToFile(AStar.generateStringBuilderOfMap(path).ToString());
+        BitMapImageGenerator imageGenerator = navigationUIHolder.imageGenerator;
+        coordinateTranslate coordinateTranslator = navigationUIHolder.coordinateTranslate;
+        coordinateTranslate.Calculate_Coordnite_Distance(route);
+        imageGenerator.SetMatrix(path);
+        imageGenerator.Generate();
+    }
 }

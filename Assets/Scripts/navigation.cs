@@ -83,12 +83,9 @@ public class Navigation
     
     public static void ResultCallBackMethod(int[,] path, List<Point> route, NavigationUIHolder navigationUIHolder)
     {
-        logMapToFile(AStar.generateStringBuilderOfMap(path).ToString());
-        BitMapImageGenerator imageGenerator = navigationUIHolder.imageGenerator;
-        coordinateTranslate coordinateTranslator = navigationUIHolder.coordinateTranslate;
-        coordinateTranslate.Calculate_Coordnite_Distance(route);
-        imageGenerator.SetMatrix(path);
-        imageGenerator.Generate();
+        navigationUIHolder.path = path;
+        navigationUIHolder.route = route;
+        navigationUIHolder.finishedNavigation = true;
     }
 
     private static List<Point> SetZValueOnPoints(List<Point> points, int value) {
@@ -119,7 +116,7 @@ public class Navigation
         (int[,], List<Point>) path = AStar.getBestPath(finish, activeTiles, visitedTiles, map);
         string stringPath = AStar.generateStringBuilderOfMap(path.Item1).ToString();
         Debug.Log("Reached destination");
-        logMapToFile(stringPath);
+        //logMapToFile(stringPath);
         return path;
     }
 }

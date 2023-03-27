@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.5407699, g: 0.7503004, b: 0.84461963, a: 1}
+  m_IndirectSpecularColor: {r: 0.54080504, g: 0.750313, b: 0.8445656, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -43363,7 +43363,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigateButton: {fileID: 757322598}
   manageCoordinates: {fileID: 1411679561}
-  imageGenerator: {fileID: 0}
+  imageGenerator: {fileID: 1948406795}
+  coordinateTranslate: {fileID: 1646347004}
+  navigationUIHolder: {fileID: 791357595}
   startRoom: 
   endRoom: 
 --- !u!1 &740903703
@@ -46017,6 +46019,50 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 788064906}
   m_Mesh: {fileID: 4300004, guid: a3dc8da8b210b014aa2dfd1e4a35dddf, type: 3}
+--- !u!1 &791357594
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 791357596}
+  - component: {fileID: 791357595}
+  m_Layer: 0
+  m_Name: NavigationUIHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &791357595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 791357594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57173c448853b3a1084312fbbb6392f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &791357596
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 791357594}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1489.0162, y: 897.84515, z: -31.119751}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &791418631
 GameObject:
   m_ObjectHideFlags: 0
