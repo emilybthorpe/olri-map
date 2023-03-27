@@ -36,7 +36,6 @@ public class NavigateButton: MonoBehaviour
     void Start()
     {
         imageGenerator = new BitMapImageGenerator();
-        navigationUIHolder = new NavigationUIHolder();
         navigationUIHolder.imageGenerator = imageGenerator;
         navigationUIHolder.coordinateTranslate = coordinateTranslate;
         Button btn = navigateButton.GetComponent<Button>();
@@ -87,6 +86,7 @@ public class NavigateButton: MonoBehaviour
     }
 
     void finishNavigationJobs() {
+        Debug.Log("starting navigation jobs");
         int [,] path = navigationUIHolder.path;
         List<Point> route = navigationUIHolder.route;
         Navigation.logMapToFile(AStar.generateStringBuilderOfMap(path).ToString());

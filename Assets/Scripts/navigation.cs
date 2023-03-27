@@ -72,7 +72,7 @@ public class Navigation
 
         ResultCallbackDelegate resultCallbackDelegate = new ResultCallbackDelegate(ResultCallBackMethod);
 
-        NavigateHelper obj = new NavigateHelper(startPoint,endPoint,map, uiholder, resultCallbackDelegate);
+        NavigateHelper obj = new NavigateHelper(startPoint,endPoint,map, ref uiholder, resultCallbackDelegate);
 
         //Creating the Thread using ThreadStart delegate
         Thread T1 = new Thread(new ThreadStart(obj.CalculatePath));
@@ -81,10 +81,16 @@ public class Navigation
     }
 
     
-    public static void ResultCallBackMethod(int[,] path, List<Point> route, NavigationUIHolder navigationUIHolder)
+    public static void ResultCallBackMethod(int[,] path, List<Point> route, ref NavigationUIHolder navigationUIHolder)
     {
+        Debug.Log("Finished thread");
+        // GameObject.Find("NavigationUIHolder").GetComponent<NavigationUIHolder>().finishedNavigation = true;
         navigationUIHolder.path = path;
         navigationUIHolder.route = route;
+        // GameObject.Find("NavigationUIHolder").GetComponent<NavigationUIHolder>().path = path;
+
+        // GameObject.Find("NavigationUIHolder").GetComponent<NavigationUIHolder>().route = route;
+
         navigationUIHolder.finishedNavigation = true;
     }
 

@@ -58,6 +58,11 @@
         {
             "Number": 12,
             "shape": "rect",
+            "coords": [634,171,333,154]
+        }, 
+        {
+            "Number": 12,
+            "shape": "rect",
             "coords": [427,152,633,177]
         },
         {

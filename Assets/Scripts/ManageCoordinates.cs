@@ -272,6 +272,22 @@ public class ManageCoordinates : MonoBehaviour
         }
     }
 
+    //  private void markCoordinatesWithValue(int[] coordinates, int value, int modifier=0)
+    // {
+    //     // int minX, maxX, minY, maxY;
+    //     // CoordinateMapHelper.GetMinMaxXY(coordinates, out minX, out maxX, out minY, out maxY);
+    //     Point start = new Point(coordinates[0], coordinates[1]);
+    //     Point end = new Point(coordinates[2], coordinates[3]);
+    //     (Point topLeft, Point bottomRight) = CoordinateMapHelper.normalizePoints(start,end);
+    //     for (int x = topLeft.X; x <= bottomRight.X; x++)
+    //     {
+    //         for (int y = topLeft.Y; y <= bottomRight.Y; y++)
+    //         {
+    //             coordinateMap[y, x] = value;
+    //         }
+    //     }
+    // }
+
     /// <summary>
     /// Mark points in pologyon, adapted from example code here: https://www.codeproject.com/Questions/221022/Get-all-Points-within-a-Polygon-in-Csharp
     // </summary>

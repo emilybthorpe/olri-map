@@ -17,7 +17,7 @@ public class fetchDirections : MonoBehaviour
     {
         directionIndex = 0 ; 
         newList = new List<string>();
-        getLatestDirectionList();
+        
     }
     public void getLatestDirectionList(){
         newList = directionsObject.GetComponent<coordinateTranslate>().get_direction_list();
@@ -45,6 +45,6 @@ public class fetchDirections : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        getLatestDirectionList();
     }
 }

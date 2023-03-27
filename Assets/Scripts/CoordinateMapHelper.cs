@@ -35,6 +35,19 @@ public class CoordinateMapHelper
     }
 
 
+    public static (Point topLeft, Point bottomRight) normalizePoints(Point p1, Point p2) {
+        int x1 = p1.X;
+        int x2 = p2.X;
+        int y1 = p1.Y;
+        int y2 = p2.Y;
+
+        Point topLeft = new Point(Math.Max(x1, x2), Math.Min(y1, y2));
+        Point bottomRight = new Point(Math.Min(x1, x2), Math.Max(y1, y2));
+
+        return (topLeft, bottomRight);
+    }
+
+
     /// <summary>
     /// Get min,max (x,Y) points of rectangle
     /// Purpose: avoiding issue where rectangle's (x,y) coords may be out of order

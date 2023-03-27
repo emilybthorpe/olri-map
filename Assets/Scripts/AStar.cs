@@ -100,7 +100,7 @@ public class AStar
         int[,] mapWithPath = map;
 
         while (tile != null) {
-            if (map[tile.Y, tile.X] == 0 || map[tile.Y, tile.X] == 2) //if traversable area
+            if (map[tile.Y, tile.X] == 0 || map[tile.Y, tile.X] == 2|| map[tile.Y, tile.X] == -1) //if traversable area
             {
                 mapWithPath[tile.Y, tile.X] = 3; // mark as path 
             }
@@ -169,7 +169,7 @@ public class AStar
         return possibleTiles
                 .Where(tile => tile.X >= 0 && tile.X <= maxX)
                 .Where(tile => tile.Y >= 0 && tile.Y <= maxY)
-                .Where(tile => map[tile.Y, tile.X] == 0 || map[tile.Y,tile.X] == 2 || (targetTile.X == tile.X && targetTile.Y == tile.Y))
+                .Where(tile => map[tile.Y, tile.X] == 0 || map[tile.Y,tile.X] == 2 || map[tile.Y, tile.X] == -1 || (targetTile.X == tile.X && targetTile.Y == tile.Y))
                 .ToList();
     }
 }
