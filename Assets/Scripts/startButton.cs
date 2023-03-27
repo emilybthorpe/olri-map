@@ -14,8 +14,8 @@ public class startButton : MonoBehaviour
     {
         
     }
-    public void startApp(){
-        SceneManager.LoadScene("Menu");
+    public void changeToInstruction(){
+        SceneManager.LoadScene("Instruction Scene");
     }
     public void search(){
         
