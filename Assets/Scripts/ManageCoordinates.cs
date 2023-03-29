@@ -57,11 +57,22 @@ public class ManageCoordinates : MonoBehaviour
     /// </summary>
     private void SetupMap() {
         markAllMapAsOutside();
+        MarkImpassibleInteriorArea();
         establishRooms();
         establishHallways();
         establishStairs();
         setupLogOfMap();
         createLogOfMap();
+    }
+
+    /// <summary>
+    /// Marks interior as hallway if not otherwise marked
+    /// Due to errors with image-map proccesing, sometimes spaces between rooms will not be marked 
+    /// and instead be impassible. This prevents this issue and allows navigation to continue
+    /// </summary>
+    private void MarkImpassibleInteriorArea() {
+        Point[] interiorPointArray = CoordinateMapHelper.ConvertIntCoordinateArrayToPointArray(interiorCoords);
+        MarkPointsInPolygon(interiorPointArray);
     }
 
     /// <summary>
