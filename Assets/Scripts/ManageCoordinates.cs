@@ -29,6 +29,10 @@ public class ManageCoordinates : MonoBehaviour
 
     private Dictionary<string, RoomInfo> roomNumbers;
 
+    private int[] interiorCoords = {235,4,60,4,65,285,130,338,633,337,632,280,665,
+                                    275,666,120,633,118,635,106,426,104,359,109,
+                                    361,130,235,132,235,59,259,60,256,4};
+
     void Start()
     {
         
