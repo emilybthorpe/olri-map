@@ -111,7 +111,7 @@ public class ManageCoordinates : MonoBehaviour
     void markAllMapAsOutside() {
         for (int x = 0; x < coordinateMap.GetLength(0); x++) {
             for (int y = 0; y < coordinateMap.GetLength(1); y++) {
-                coordinateMap[x, y] = -1;
+                coordinateMap[y, x] = 0;
             }
         }
     }

@@ -1,4 +1,6 @@
 using System;
+using Unity;
+using UnityEngine;
 using System.Linq;
 
 public class CoordinateMapHelper 
@@ -40,7 +42,9 @@ public class CoordinateMapHelper
     public static Point GetCenterPointOfRoom(RoomInfo room) {
         int minX, maxX, minY, maxY;
         GetMinMaxXY(room.coords, out minX, out maxX, out minY, out maxY);
-        return new Point((maxX + minX)/ 2, (maxY + minY) / 2);
+        Point center = new Point((maxX + minX)/ 2, (maxY + minY) / 2);
+        Debug.Log(center);
+        return center;
     }
 
     /// <summary>
