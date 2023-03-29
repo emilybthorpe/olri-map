@@ -18,6 +18,22 @@ public class CoordinateMapHelper
         return GetFloor(room.Number);
     }
 
+
+    /// <summary>
+    /// Converts array of x,y coordinates to array of Points(x,y)
+    /// </summary>
+    public static Point[] ConvertIntCoordinateArrayToPointArray(int[] coordinates)
+    {
+        Point[] pointArray = new Point[coordinates.Length];
+        int count = 0;
+        for(int i = 0; i < coordinates.Length - 2; i++) {
+            Point thisPoint = new Point(coordinates[i], coordinates[i+1]);
+            pointArray[count] = thisPoint;
+            count++;
+        }
+        return pointArray;
+    }
+
     /// <summary>
     /// Get genter point of room
     /// </summary>
