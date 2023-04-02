@@ -35,13 +35,13 @@ public class NavigateButton: MonoBehaviour
 
     void Start()
     {
-        imageGenerator = new BitMapImageGenerator();
+        // imageGenerator = new BitMapImageGenerator();
         navigationUIHolder.imageGenerator = imageGenerator;
         navigationUIHolder.coordinateTranslate = coordinateTranslate;
         Button btn = navigateButton.GetComponent<Button>();
        
         // Get rooms from playerprefs
-        setRooms(PlayerPrefs.GetString("currentLocation"), PlayerPrefs.GetString("destination"));
+        setRooms(PlayerPrefs.GetString("currentLocation").Substring(0,PlayerPrefs.GetString("currentLocation").Length - 1), PlayerPrefs.GetString("destination").Substring(0,PlayerPrefs.GetString("destination").Length - 1));
 
         btn.onClick.AddListener(TaskOnClick);
     }
