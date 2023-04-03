@@ -3,42 +3,42 @@
         {
             "Number": 141,
             "shape": "rect", 
-            "coords": [426,107,461,159]
+            "coords": [427,107,461,155]
         },
         {
             "Number": 142,
             "shape": "rect", 
-            "coords": [460,108,495,160]
+            "coords": [461,107,495,155]
         },
         {
             "Number": 143,
             "shape": "rect", 
-            "coords": [493,110,528,153]
+            "coords": [494,107,528,155]
         },
         {
             "Number": 145,
             "shape": "rect", 
-            "coords": [529,111,564,155]
+            "coords": [528,107,565,155]
         },
         {
             "Number": 147,
             "shape": "rect", 
-            "coords": [567,112,612,154]
+            "coords": [566,107,611,155]
         },
         {
             "Number": 148,
             "shape": "rect", 
-            "coords": [611,106,632,162]
+            "coords": [611,107,631,155]
         },
         {
             "Number": 149,
             "shape": "rect", 
-            "coords": [667,113,632,187]
+            "coords": [632,115,666,185]
         },
         {
             "Number": 144,
             "shape": "rect", 
-            "coords": [529,172,464,218]
+            "coords": [463,172,531,219]
         },
         {"Number": "150" ,  "shape" :"rect", "coords" :[528,169,595,220]},
         {"Number": "146" ,  "shape" :"rect", "coords" :[620,189,596,220]},

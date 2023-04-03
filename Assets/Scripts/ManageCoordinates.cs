@@ -255,13 +255,22 @@ public class ManageCoordinates : MonoBehaviour
     {
         int minX, maxX, minY, maxY;
         CoordinateMapHelper.GetMinMaxXY(coordinates, out minX, out maxX, out minY, out maxY);
-        for (int x = minX + modifier; x < maxX; x++)
+        for (int x = minX + modifier; x < maxX - modifier; x++)
         {
-            for (int y = minY + modifier; y < maxY; y++)
+            for (int y = minY + modifier; y < maxY - modifier; y++)
             {
                 coordinateMap[y, x] = value;
             }
         }
+    }
+
+    /// <summary>
+    /// Get floor of point
+    /// </summary>
+    public int getFloorOfPoint(Point point) {
+        RoomInfo room = GetRoomContainingPoint(point);
+        int floor = CoordinateMapHelper.GetFloor(room);
+        return floor;
     }
 
     /// <summary>

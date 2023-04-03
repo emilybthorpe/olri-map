@@ -6,6 +6,8 @@ public class NavigationUIHolder :  MonoBehaviour
     public BitMapImageGenerator imageGenerator {get;set;}
     public coordinateTranslate coordinateTranslate {get;set;}
 
+    public ManageCoordinates manageCoordinates {get; set;}
+
     public int[,] path {get;set;}
     
     public List<Point> route {get;set;}
@@ -15,6 +17,13 @@ public class NavigationUIHolder :  MonoBehaviour
     public NavigationUIHolder(BitMapImageGenerator bmp, coordinateTranslate cord) {
         this.imageGenerator = bmp;
         this.coordinateTranslate = cord;
+        this.manageCoordinates = null;
+    }
+
+    public NavigationUIHolder(BitMapImageGenerator bmp, coordinateTranslate cord, ManageCoordinates manageCoordinates) {
+        this.imageGenerator = bmp;
+        this.coordinateTranslate = cord;
+        this.manageCoordinates = manageCoordinates;
     }
 
     public NavigationUIHolder() {

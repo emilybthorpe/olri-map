@@ -36,6 +36,8 @@ public class CoordinateMapHelper
         return pointArray;
     }
 
+    
+
     /// <summary>
     /// Get genter point of room
     /// </summary>

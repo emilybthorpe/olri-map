@@ -40,6 +40,7 @@ public class MapGenScript : MonoBehaviour {
 		float multiplierFactor = TileDimension + float.Epsilon;
 		width = Map.width;
 		height = Map.height;
+		int count = 0;
 		Color[] pixels = Map.GetPixels();
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
@@ -48,52 +49,61 @@ public class MapGenScript : MonoBehaviour {
 					if(prefabClusterWhite.Length!=0) {
 						GameObject inst = GameObject.Instantiate(randomPrefab(prefabClusterWhite), trans);
 						inst.transform.position = new Vector3(j* multiplierFactor, 0, i* multiplierFactor);
+						count++;
 					}
 				}
 				if (pixelColor == Color.black) {
 					if(prefabClusterBlack.Length!=0) {
 						GameObject inst = GameObject.Instantiate(randomPrefab(prefabClusterBlack), trans);
 						inst.transform.position = new Vector3(j* multiplierFactor, 0, i* multiplierFactor);
+						count++;
 					}
 				}
 				if (pixelColor == Color.blue) {
 					if(prefabClusterBlue.Length!=0) {
 						GameObject inst = GameObject.Instantiate(randomPrefab(prefabClusterBlue), trans);
 						inst.transform.position = new Vector3(j* multiplierFactor, 0, i* multiplierFactor);
+						count++;
 					}
 				}
 				if (pixelColor == Color.red) {
 					if(prefabClusterRed.Length!=0) {
 						GameObject inst = GameObject.Instantiate(randomPrefab(prefabClusterRed), trans);
 						inst.transform.position = new Vector3(j* multiplierFactor, 0, i* multiplierFactor);
+						count++;
 					}
 				}
 				if (pixelColor == Color.green) {
 					if(prefabClusterGreen.Length!=0) {
 						GameObject inst = GameObject.Instantiate(randomPrefab(prefabClusterGreen), trans);
 						inst.transform.position = new Vector3(j* multiplierFactor, 0, i* multiplierFactor);
+						count++;
 					}
 				}
 				if (pixelColor == Color.cyan) {
 					if(prefabClusterCyan.Length!=0) {
 						GameObject inst = GameObject.Instantiate(randomPrefab(prefabClusterCyan), trans);
 						inst.transform.position = new Vector3(j* multiplierFactor, 0, i* multiplierFactor);
+						count++;
 					}
 				}
 				if (pixelColor == Color.magenta) {
 					if(prefabClusterMagenta.Length!=0) {
 						GameObject inst = GameObject.Instantiate(randomPrefab(prefabClusterMagenta), trans);
 						inst.transform.position = new Vector3(j* multiplierFactor, 0, i* multiplierFactor);
+						count++;
 					}
 				}
 			}
 		}
+		Debug.Log("Current # of new gameobjects: " + count);
 	}
 
     private void GenerateMap() { //Here, regular maps are generated, using our rotation system.
 		float multiplierFactor = TileDimension + float.Epsilon;
 		width = Map.width;
 		height = Map.height;
+		
 		Color[] pixels = Map.GetPixels();
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {

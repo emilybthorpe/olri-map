@@ -24,51 +24,72 @@ public class Navigation
     /// Navigates between multiple floors
     /// Returns a tuple of (floorMapsList, complete multi-floor route list)
     /// </sumary>
-    public static (List<int[,]>, List<Point>) MultiFloorNavigation(ManageCoordinates coordinateManager, Point startPoint, Point endPoint, int[,] map)
+    public static (List<int[,]>, List<Point>) MultiFloorNavigation(NavigationUIHolder uIHolder, Point startPoint, Point endPoint, int[,] map)
     {
-        RoomInfo startRoom = coordinateManager.GetRoomContainingPoint(startPoint);
-        RoomInfo endRoom = coordinateManager.GetRoomContainingPoint(endPoint);
-        int startFloor = CoordinateMapHelper.GetFloor(startRoom);
-        int endFloor = CoordinateMapHelper.GetFloor(endRoom);
+        ManageCoordinates coordinateManager = uIHolder.manageCoordinates;
+        int startFloor = coordinateManager.getFloorOfPoint(startPoint);
+        int endFloor = coordinateManager.getFloorOfPoint(endPoint);
         List<int[,]> floorMaps = new List<int[,]>();
-
-        //Check if single-floor navigation, then just do regular
-        if (startFloor == endFloor ) 
-        {  
-            (int[,] singleFloorMap, List<Point> singleFloorReute) =  navigate(startPoint, endPoint, map);
-            return (new List<int[,]>{singleFloorMap}, singleFloorReute);
-        }
 
         int floorDifference = Mathf.Abs(endFloor - startFloor);
 
         List<Point> completeRoute = new List<Point>();
-        
+
         Point stairLocation = CoordinateMapHelper.GetCenterPointOfStair(coordinateManager.GetNearestStairEucledian(startPoint));
 
-        (int[,] startMap, List<Point> startRoute) = navigate(startPoint, endPoint, map);
-        floorMaps.Add(startMap);
-        startRoute = SetZValueOnPoints(startRoute, startFloor);
-        completeRoute.AddRange(startRoute);
+        int[,] startMap;
+        List<Point> startRoute;
+        Thread firstFloorThread = new System.Threading.Thread(() =>
+        {
+            (startMap, startRoute) = navigate(startPoint, endPoint, map);
+        });
+
+        firstFloorThread.Start();
 
 
-        for(int i = 0; i < floorDifference; i++) {
+        for (int i = 0; i < floorDifference; i++)
+        {
             (int[,] thisMap, List<Point> thisRoute) = navigate(stairLocation, stairLocation, map);
-            thisRoute = SetZValueOnPoints(thisRoute, i);
-            completeRoute.AddRange(thisRoute);
-            floorMaps.Add(thisMap);
+            completeRoute.AddRange(SetValuesFromNavigation(i, floorMaps, thisMap, thisRoute)); 
         }
 
         (int[,] endMap, List<Point> endRoute) = navigate(stairLocation, endPoint, map);
-        endRoute = SetZValueOnPoints(endRoute, endFloor);
-        floorMaps.Add(endMap);
-        completeRoute.AddRange(endRoute);
-        
+        // startRoute = NewMethod(startFloor, floorMaps, completeRoute, startMap, startRoute);
 
+        completeRoute.AddRange(SetValuesFromNavigation(startFloor, floorMaps, startMap, startRoute));
+        completeRoute.AddRange(SetValuesFromNavigation(endFloor, floorMaps, endMap, endRoute));
 
         return (floorMaps, completeRoute);
     }
 
+    private static List<Point> SetValuesFromNavigation(int floor, List<int[,]> floorMaps, int[,] map, List<Point> route)
+    {
+        floorMaps.Add(map);
+        route = SetZValueOnPoints(route, floor);
+        return route;
+    }
+
+    private static List<Point> NewMethod(int startFloor, List<int[,]> floorMaps, List<Point> completeRoute, int[,] startMap, List<Point> startRoute)
+    {
+        floorMaps.Add(startMap);
+        startRoute = SetZValueOnPoints(startRoute, startFloor);
+        completeRoute.AddRange(startRoute);
+        return startRoute;
+    }
+
     public static void TheadedNavigation(Point startPoint, Point endPoint, int[,] map, NavigationUIHolder uiholder) {
+
+        ResultCallbackDelegate resultCallbackDelegate = new ResultCallbackDelegate(ResultCallBackMethod);
+
+        NavigateHelper obj = new NavigateHelper(startPoint,endPoint,map, ref uiholder, resultCallbackDelegate);
+
+        //Creating the Thread using ThreadStart delegate
+        Thread T1 = new Thread(new ThreadStart(obj.CalculatePath));
+        
+        T1.Start();
+    }
+
+    public static void ThreadedMultiFloorNavigation(Point startPoint, Point endPoint, int[,] map, NavigationUIHolder uiholder) {
 
         ResultCallbackDelegate resultCallbackDelegate = new ResultCallbackDelegate(ResultCallBackMethod);
 
@@ -84,14 +105,14 @@ public class Navigation
     public static void ResultCallBackMethod(int[,] path, List<Point> route, ref NavigationUIHolder navigationUIHolder)
     {
         Debug.Log("Finished thread");
-        // GameObject.Find("NavigationUIHolder").GetComponent<NavigationUIHolder>().finishedNavigation = true;
         navigationUIHolder.path = path;
         navigationUIHolder.route = route;
-        // GameObject.Find("NavigationUIHolder").GetComponent<NavigationUIHolder>().path = path;
-
-        // GameObject.Find("NavigationUIHolder").GetComponent<NavigationUIHolder>().route = route;
-
         navigationUIHolder.finishedNavigation = true;
+    }
+
+    public static void MultiFloorResultCallBackMethod(int[,] path, List<Point> route, ref NavigationUIHolder navigationUIHolder) 
+    {
+
     }
 
     private static List<Point> SetZValueOnPoints(List<Point> points, int value) {
